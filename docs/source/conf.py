@@ -14,11 +14,12 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+from datetime import date
 
 # -- Project information -----------------------------------------------------
 
 project = "pythontemplate"
-copyright = "CURRENT_YEAR_HERE, YOUR_NAME_HERE"
+copyright = f"{date.today().year}, YOUR_NAME_HERE"
 author = "YOUR_NAME_HERE"
 
 # The full version, including alpha/beta/rc tags
@@ -71,6 +72,7 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+html_title = project
 html_logo = "../../assets/logo_200w.png"
 html_favicohn = None
 
