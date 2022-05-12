@@ -1,0 +1,21 @@
+[build-system]
+requires = ["poetry>=1.2.0b1", "poetry-dynamic-versioning-plugin"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+
+[tool.poetry]
+name = "pythonpackagetemplate"
+version = "0.0.0"  # Do not change, let poetry-dynamic-versioning handle it.
+description = ""
+authors = ["Brian Pugh <bnp117@gmail.com>"]
+readme = "README.md"
+packages = []
+
+[tool.poetry.dependencies]
+# Be as loose as possible if writing a library.
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.1.2"

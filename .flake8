@@ -1,0 +1,11 @@
+[flake8]
+max-line-length = 88
+# E203: whitespace before ":". Sometimes violated by black.
+# E402: Module level import not at top of file. Violated by lazy imports.
+# F401: Module imported but unused.
+# D100-D107: Missing docstrings
+# D200: One-line docstring should fit on one line with quotes.
+extend-ignore = E203,E402,F401,D100,D101,D102,D103,D104,D105,D106,D107,D200
+docstring-convention = numpy
+# Ignore missing docstrings within unit testing functions.
+per-file-ignores = **/tests/:D100,D101,D102,D103,D104,D105,D106,D107
