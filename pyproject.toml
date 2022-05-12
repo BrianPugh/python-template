@@ -4,6 +4,8 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry-dynamic-versioning]
 enable = true
+vcs = "git"
+style = "semver"
 
 [tool.poetry]
 name = "pythontemplate"
@@ -21,6 +23,7 @@ python = "^3.8"
 pytest = "^7.1.2"
 coverage = {extras = ["toml"], version = "^5.1"}
 pre_commit = "^2.16.0"
+poetry-dynamic-versioning = "^0.16.0"
 
 [tool.coverage.run]
 branch = true
