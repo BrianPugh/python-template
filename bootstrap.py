@@ -1,11 +1,26 @@
+# Only use builtin libraries for this script
 import re
 import readline
 import subprocess
+from datetime import date
 from pathlib import Path
 
 
 class BadResponse(Exception):
     """User gave a bad response."""
+
+
+def check_and_install_poetry():
+    try:
+        subprocess.check_output(["which", "poetry"])
+        return
+    except subprocess.CalledProcessError:
+        pass
+
+    subprocess.check_output(
+        "curl -sSL https://install.python-poetry.org | python3 - --preview",
+        shell=True,
+    )
 
 
 def camel_to_snake(s):
@@ -32,48 +47,41 @@ def git(*args):
     return subprocess.check_output(["git"] + list(args))
 
 
+def is_identifier(response):
+    if not response.isidentifier():
+        raise BadResponse("is not a valid python identifier.")
+
+
+def is_lower(response):
+    if response.lower() != response:
+        raise BadResponse("should be all lower case.")
+
+
+def good_module_name(response):
+    is_identifier(response)
+    is_lower(response)
+    if "_" in response:
+        raise BadResponse("should not contain an underscore _")
+    if len(response) > 20:
+        raise BadResponse("is too long (max 20 char limit).")
+
+
+def good_class_name(response):
+    is_identifier(response)
+    if not response[0].isupper():
+        raise BadResponse("first letter should be capitalized.")
+
+
 def main():
-    def is_identifier(response):
-        if not response.isidentifier():
-            raise BadResponse("is not a valid python identifier.")
+    check_and_install_poetry()
 
-    def is_lower(response):
-        if response.lower() != response:
-            raise BadResponse("should be all lower case.")
-
-    def good_module_name(response):
-        is_identifier(response)
-        is_lower(response)
-        if "_" in response:
-            raise BadResponse("should not contain an underscore _")
-        if len(response) > 20:
-            raise BadResponse("is too long (max 20 char limit).")
-
-    developer_name = validate_input("Enter your name")
-
-    module_name = validate_input("Python Module Name (default: app)", good_module_name)
-
-    def good_class_name(response):
-        is_identifier(response)
-        if not response[0].isupper():
-            raise BadResponse("first letter should be capitalized.")
-
-    dataset_class_name = validate_input(
-        "Dataset class name (default: MyDataset)", good_class_name
-    )
-
-    model_class_name = validate_input(
-        "Model class name (default: MyModel)", good_class_name
-    )
-
-    replacements = {
-        "YOUR_NAME_HERE": developer_name,
-        "app": module_name,
-        "MyDataset": dataset_class_name,
-        "mydataset": dataset_class_name.lower(),
-        "MyModel": model_class_name,
-        "mymodel": model_class_name.lower(),
+    replacements: dict[str, str] = {
+        "CURRENT_YEAR_HERE": str(date.today().year),
     }
+    replacements["YOUR_NAME_HERE"] = validate_input("Enter your name")
+    replacements["pythontemplate"] = validate_input(
+        "Python Module Name", good_module_name
+    )
 
     def replace(string):
         """Replace whole words only."""
@@ -99,22 +107,23 @@ def main():
             py_file.replace(dst)
 
     # Move the app folder
-    (repo / "app").replace(repo / replacements["app"])
+    (repo / "pythontemplate").replace(repo / replacements["pythontemplate"])
 
-    # Move README_TEMPLATE.md
-    (repo / "README_TEMPLATE.md").replace(repo / "README.md")
+    # Move README_TEMPLATE.rst
+    (repo / "README_TEMPLATE.rst").replace(repo / "README.rst")
+
+    subprocess.check_output(["poetry", "install"])
+    subprocess.check_output(["poetry", "run", "python", "-m", "pre_commit", "install"])
+    git("add", "*")
+    git("commit", "-m", "bootstrap from template")
+
+    print()
+    print("Bootstrapping complete. Changes commited. Please run:")
+    print("    git push")
+    print()
 
     # Delete this script
     bootstrap_file.unlink()
-
-    subprocess.check_output(["pre-commit", "install"])
-    git("add", "*")
-    git("commit", "-m", "rename from template")
-
-    print()
-    print("Renaming complete. Changes commited. Please run:")
-    print("    git push")
-    print()
 
 
 if __name__ == "__main__":
