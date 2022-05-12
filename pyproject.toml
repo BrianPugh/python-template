@@ -1,0 +1,61 @@
+[build-system]
+requires = ["poetry>=1.2.0b1", "poetry-dynamic-versioning-plugin"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "semver"
+
+[tool.poetry]
+name = "pythontemplate"
+version = "0.0.0"  # Do not change, let poetry-dynamic-versioning handle it.
+description = ""
+authors = ["YOUR_NAME_HERE"]
+readme = "README.rst"
+packages = [{include = "pythontemplate"}]
+
+[tool.poetry.dependencies]
+# Be as loose as possible if writing a library.
+python = "^3.8"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "~4.5.0"
+sphinx_rtd_theme = "~1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+coverage = {extras = ["toml"], version = "^5.1"}
+flake8 = "^4.0.1"
+ipdb = "^0.13.9"
+poetry-dynamic-versioning = "^0.16.0"
+pre_commit = "^2.16.0"
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+pytest-mock = "^3.7.0"
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "tests/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self.debug:",
+    "if debug:",
+    "if DEBUG:",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if False:",
+    "if __name__ == .__main__.:",
+]

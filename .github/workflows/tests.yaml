@@ -1,0 +1,105 @@
+# Regular tests
+#
+# Use this to ensure your tests are passing on every push and PR (skipped on
+# pushes which only affect documentation).
+#
+# You should make sure you run jobs on at least the *oldest* and the *newest*
+# versions of python that your codebase is intended to support.
+
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.8", "3.9", "3.10"]
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python-version }}
+
+    steps:
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      #----------------------------------------------
+      #  -----  install & configure poetry  -----
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+          installation-arguments: --preview
+
+      #----------------------------------------------
+      #       load cached venv if cache exists
+      #----------------------------------------------
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      #----------------------------------------------
+      # install dependencies if cache does not exist
+      #----------------------------------------------
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      #----------------------------------------------
+      #   install your root project, if required
+      #----------------------------------------------
+      - name: Install library
+        run: poetry install --no-interaction
+
+      #----------------------------------------------
+      #              run test suite
+      #----------------------------------------------
+      - name: Sanity check with flake8
+        run: |
+          source .venv/bin/activate
+          # stop the build if there are Python syntax errors or undefined names
+          python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings
+          python -m flake8 . --count --exit-zero --statistics
+
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          python -m pytest --cov=pythontemplate --cov-report term --cov-report xml --cov-config .coveragerc --junitxml=testresults.xml
+          coverage report
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests
+          env_vars: OS,PYTHON
+          name: Python ${{ matrix.python-version }} on ${{ runner.os }}
+
+      #----------------------------------------------
+      #            make sure docs build
+      #----------------------------------------------
+      - name: Build HTML docs
+        run: |
+          source .venv/bin/activate
+          sphinx-build -b html docs/source/ docs/build/html
