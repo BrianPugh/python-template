@@ -24,6 +24,7 @@ pytest = "^7.1.2"
 coverage = {extras = ["toml"], version = "^5.1"}
 pre_commit = "^2.16.0"
 poetry-dynamic-versioning = "^0.16.0"
+sphinx = "^4.5.0"
 
 [tool.coverage.run]
 branch = true
