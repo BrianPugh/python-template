@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Only use builtin libraries for this script
 import re
 import readline
@@ -95,7 +96,8 @@ def main():
         # update .gitignore to:
         #    * Remove poetry.lock, non-library projects should include it.
         lines_to_remove = ["/poetry.lock"]
-        with open(".gitignore", "r+") as f:
+        gitignore = Path(".gitignore")
+        with gitignore.open("r+") as f:
             d = f.readlines()
             f.seek(0)
             for i in d:
@@ -115,10 +117,9 @@ def main():
         )
 
     repo = Path(__file__).parent
-    bootstrap_file = repo / "bootstrap.py"
+    bootstrap_file = repo / "bootstrap"
     files: list[Path] = list(repo.rglob("*.py"))
     files.append(Path("pyproject.toml"))
-    files.remove(bootstrap_file)
     for py_file in files:
         contents = py_file.read_text()
         contents = replace(contents)

@@ -101,4 +101,3 @@ repos:
           - flake8-docstrings
           - flake8-implicit-str-concat
           - flake8-use-pathlib
-          - flake8-spellcheck
