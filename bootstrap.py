@@ -96,9 +96,10 @@ def main():
 
     repo = Path(__file__).parent
     bootstrap_file = repo / "bootstrap.py"
-    py_files = list(repo.rglob("*.py"))
-    py_files.remove(bootstrap_file)
-    for py_file in py_files:
+    files: list[Path] = list(repo.rglob("*.py"))
+    files.append(Path("pyproject.toml"))
+    files.remove(bootstrap_file)
+    for py_file in files:
         contents = py_file.read_text()
         contents = replace(contents)
         py_file.write_text(contents)

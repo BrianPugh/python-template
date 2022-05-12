@@ -6,12 +6,12 @@ build-backend = "poetry.masonry.api"
 enable = true
 
 [tool.poetry]
-name = "pythonpackagetemplate"
+name = "pythontemplate"
 version = "0.0.0"  # Do not change, let poetry-dynamic-versioning handle it.
 description = ""
-authors = ["Brian Pugh <bnp117@gmail.com>"]
+authors = ["YOUR_NAME_HERE"]
 readme = "README.rst"
-packages = []
+packages = [{include = "pythontemplate"}]
 
 [tool.poetry.dependencies]
 # Be as loose as possible if writing a library.
