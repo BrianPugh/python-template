@@ -47,6 +47,11 @@ def git(*args):
     return subprocess.check_output(["git"] + list(args))
 
 
+def boolean(response):
+    response = response.lower()
+    return response in ["yes", "y", "true", "t", "1"]
+
+
 def is_identifier(response):
     if not response.isidentifier():
         raise BadResponse("is not a valid python identifier.")
@@ -82,6 +87,21 @@ def main():
     replacements["pythontemplate"] = validate_input(
         "Python Module Name", good_module_name
     )
+    is_library = validate_input(
+        "Is this going to be a library? [default: yes]", boolean
+    )
+
+    if not is_library:
+        # update .gitignore to:
+        #    * Remove poetry.lock, non-library projects should include it.
+        lines_to_remove = ["/poetry.lock"]
+        with open(".gitignore", "r+") as f:
+            d = f.readlines()
+            f.seek(0)
+            for i in d:
+                if i not in lines_to_remove:
+                    f.write(i)
+            f.truncate()
 
     def replace(string):
         """Replace whole words only."""
