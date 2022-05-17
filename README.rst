@@ -19,22 +19,37 @@ And follow the on-screen prompts.
 
 Features
 ========
+
 * Features dependent if project is a library or a standalone project.
+
 * `Poetry`_ support.
-    * If not installed, Poetry will automatically be installed when running ``bootstrap``.
+
+  * If not installed, Poetry will automatically be installed when running ``bootstrap``.
+
 * `Sphinx`_ + `ReadTheDocs`_.
-    * Goto `ReadTheDocs Dashboard`_ and click on "Import a Project".
+
+  * Goto `ReadTheDocs Dashboard`_ and click on "Import a Project".
+
 * `Pre-commit`_ linting and static analysis.
+
 * `Docker`_ support for standalone projects.
+
 * GitHub actions for:
-    * Run ``pre-commit`` on pull requests and commits to ``main``.
-    * Run unit tests, coverage, and verify docs build on pull requests and commits to ``main``.
-        * Goto your `Codecov Dashboard`_ and add your repo.
-    * Build and upload wheels to PyPi on semver tags ``vX.Y.Z``.
-        * Add your `PyPi API token`_ to your `GitHub secrets`_ for key ``PYPI_TOKEN``.
-    * Build and upload docker images to Dockerhub.
-        * Add your Dockerhub username and `token`_ to your `GitHub secrets`_
-          ``DOCKERHUB_USERNAME`` and ``DOCKERHUB_TOKEN``.
+
+  * Run ``pre-commit`` on pull requests and commits to ``main``.
+
+  * Run unit tests, coverage, and verify docs build on pull requests and commits to ``main``.
+
+    * Goto your `Codecov Dashboard`_ and add your repo.
+
+  * Build and upload wheels to PyPi on semver tags ``vX.Y.Z``.
+
+    * Add your `PyPi API token`_ to your `GitHub secrets`_ for key ``PYPI_TOKEN``.
+
+  * Build and upload docker images to Dockerhub.
+
+    * Add your Dockerhub username and `token`_ to your `GitHub secrets`_
+      ``DOCKERHUB_USERNAME`` and ``DOCKERHUB_TOKEN``.
 
 
 Reference
