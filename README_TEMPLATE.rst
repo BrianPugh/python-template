@@ -16,6 +16,8 @@ Features
 Installation
 ============
 
+pythontemplate requires Python ``>=3.8`` and can be installed via:
+
 .. code-block:: bash
 
    python -m pip install git+https://github.com/GIT_USERNAME/GIT_REPONAME.git

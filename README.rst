@@ -20,9 +20,9 @@ And follow the on-screen prompts.
 Features
 ========
 * Features dependent if project is a library or a standalone project.
-* Poetry_ support.
+* `Poetry`_ support.
     * If not installed, Poetry will automatically be installed when running ``bootstrap``.
-* Sphinx_ + ReadTheDocs_.
+* `Sphinx`_ + `ReadTheDocs`_.
     * Goto `ReadTheDocs Dashboard`_ and click on "Import a Project".
 * `Pre-commit`_ linting and static analysis.
 * `Docker`_ support for standalone projects.
