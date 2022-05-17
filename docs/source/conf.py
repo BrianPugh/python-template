@@ -74,7 +74,7 @@ html_static_path = ["_static"]
 
 html_title = project
 html_logo = "../../assets/logo_200w.png"
-html_favicohn = None
+html_favicon = None
 
 html_theme_options = {
     # "analytics_id": "G-XXXXXXXXXX",  # Provided by Google in your dashboard
