@@ -1,3 +1,5 @@
+|Python compat| |GHA tests|
+
 A template to quickly get you creating an open-source python library
 or project with linting, static analysis, CI, and CD to PyPi.
 
@@ -40,6 +42,11 @@ Reference
 If you find this in the git history of a project and you like the structure, visit
 this template at https://github.com/BrianPugh/python-template .
 
+
+.. |GHA tests| image:: https://github.com/BrianPugh/python-template/workflows/tests/badge.svg
+   :target: https://github.com/BrianPugh/python-template/actions?query=workflow%3Atests
+   :alt: GHA Status
+.. |Python compat| image:: https://img.shields.io/badge/>=python-3.8-blue.svg
 
 .. _Codecov Dashboard: https://app.codecov.io/gh
 .. _Docker: https://www.docker.com
