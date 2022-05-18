@@ -44,6 +44,8 @@ templates_path = ["_templates"]
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+smartquotes = False
+
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
