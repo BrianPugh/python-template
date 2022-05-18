@@ -6,15 +6,14 @@
 
 # -- Path setup --------------------------------------------------------------
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
-
+import os
+import sys
 from datetime import date
+
+sys.path.insert(0, os.path.abspath("../.."))
+
+
+from pythontemplate import __version__
 
 # -- Project information -----------------------------------------------------
 
@@ -22,8 +21,10 @@ project = "pythontemplate"
 copyright = f"{date.today().year}, YOUR_NAME_HERE"
 author = "YOUR_NAME_HERE"
 
+# The short X.Y version.
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = "0.0.0"
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
