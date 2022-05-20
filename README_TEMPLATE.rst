@@ -1,6 +1,6 @@
 .. image:: assets/logo_200w.png
 
-|Python compat| |GHA tests| |Codecov report| |readthedocs|
+|Python compat| |PyPi| |GHA tests| |Codecov report| |readthedocs|
 
 .. inclusion-marker-do-not-remove
 
@@ -43,3 +43,5 @@ Usage
         :target: https://GIT_REPONAME.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 .. |Python compat| image:: https://img.shields.io/badge/>=python-3.8-blue.svg
+.. |PyPi| image:: https://img.shields.io/pypi/v/pythontemplate.svg
+        :target: https://pypi.python.org/pypi/pythontemplate
