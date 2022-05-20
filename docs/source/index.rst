@@ -8,6 +8,9 @@ Welcome to pythontemplate's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   Installation
+   Overview
+
 
 
 Indices and tables
