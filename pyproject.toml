@@ -10,6 +10,9 @@ style = "semver"
 [tool.poetry]
 name = "pythontemplate"
 version = "0.0.0"  # Do not change, let poetry-dynamic-versioning handle it.
+homepage = "https://github.com/GIT_USERNAME/GIT_REPONAME"
+repository = "https://github.com/GIT_USERNAME/GIT_REPONAME"
+license = "Apache-2.0"
 description = ""
 authors = ["YOUR_NAME_HERE"]
 readme = "README.rst"
