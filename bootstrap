@@ -211,7 +211,7 @@ def main():
     git("commit", "-m", "bootstrap from template")
 
     print()
-    print("Bootstrapping complete. Changes commited. Please run:")
+    print("Bootstrapping complete. Changes committed. Please run:")
     print("    git push")
     print()
 
