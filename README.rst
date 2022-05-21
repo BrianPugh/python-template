@@ -14,7 +14,7 @@ Then run:
    git clone YOUR_REPO
    ./bootstrap
 
-And follow the on-screen prompts.
+And follow the on-screen prompts. ``bootstrap`` uses some git data (like detecting your username and repository name), so cloning the repo generated from the template is necessary.
 
 
 Features
