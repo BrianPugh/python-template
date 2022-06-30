@@ -4,6 +4,13 @@ repos:
     hooks:
       - id: codespell
 
+  - repo: https://github.com/PyCQA/bandit.git
+    rev: 1.7.4
+    hooks:
+      - id: bandit
+        additional_dependencies: ["bandit[toml]"]
+        args: ["-c", "pyproject.toml"]
+
   - repo: https://github.com/PyCQA/isort
     rev: 5.10.1
     hooks:
