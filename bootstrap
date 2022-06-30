@@ -2,7 +2,7 @@
 # Only use builtin libraries for this script
 import re
 import readline
-import subprocess
+import subprocess  # nosec
 from datetime import date
 from pathlib import Path
 
@@ -11,16 +11,21 @@ class BadResponse(Exception):
     """User gave a bad response."""
 
 
+def run(cmds, **kwargs):
+    """Run bash cmd without capturing stdout."""
+    subprocess.run(cmds, capture_output=False, check=True, **kwargs)  # nosec
+
+
 def check_and_install_poetry():
     try:
-        subprocess.check_output(["which", "poetry"])
+        subprocess.check_output(["which", "poetry"])  # nosec
         return
     except subprocess.CalledProcessError:
         pass
 
     run(
         "curl -sSL https://install.python-poetry.org | python3 - --preview",
-        shell=True,
+        shell=True,  # nosec
     )
 
 
@@ -48,7 +53,7 @@ def validate_input(prompt, validate=None, default=""):
 
 
 def git(*args):
-    return subprocess.check_output(["git"] + list(args))
+    return subprocess.check_output(["git"] + list(args))  # nosec
 
 
 yes_terms = {"yes", "y", "true", "t", "1"}
@@ -107,11 +112,6 @@ def remove_lines_in_file(file, lines_to_remove):
             f.write(line)
 
         f.truncate()
-
-
-def run(cmds, **kwargs):
-    """Run bash cmd without capturing stdout."""
-    subprocess.run(cmds, capture_output=False, check=True, **kwargs)
 
 
 def git_remote_to_username_repo(git_remote_url):
