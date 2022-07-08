@@ -15,6 +15,14 @@ on:
   pull_request:
 
 jobs:
+  safety:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Safety Dependency Checking
+        uses: pyupio/safety@v1
+        with:
+          api-key: ${{ secrets.SAFETY_API_KEY }}
+
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -95,7 +103,6 @@ jobs:
           flags: unittests
           env_vars: OS,PYTHON
           name: Python ${{ matrix.python-version }} on ${{ runner.os }}
-
       #----------------------------------------------
       #            make sure docs build
       #----------------------------------------------

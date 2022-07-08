@@ -42,6 +42,10 @@ Features
 
     * Goto your `Codecov Dashboard`_ and add your repo.
 
+  * Run `Safety`_ to check dependencies for known security vulnerabilities.
+
+    * Add your `Safety API token`_ to your `GitHub secrets`_ for key ``SAFETY_API_KEY``.
+
   * Build and upload wheels to PyPi on semver tags ``vX.Y.Z``.
 
     * Add your `PyPi API token`_ to your `GitHub secrets`_ for key ``PYPI_TOKEN``.
@@ -73,3 +77,5 @@ this template at https://github.com/BrianPugh/python-template .
 .. _ReadTheDocs: https://readthedocs.org
 .. _Sphinx: https://www.sphinx-doc.org/en/master/
 .. _token: https://docs.docker.com/docker-hub/access-tokens/
+.. _Safety: https://github.com/pyupio/safety
+.. _Safety API token: https://pyup.io/account/teams/
