@@ -10,6 +10,7 @@ Welcome to pythontemplate's documentation!
 
    Installation
    Overview
+   api
 
 
 
