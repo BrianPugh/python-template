@@ -34,6 +34,7 @@ release = __version__
 # ones.
 extensions = [
     "sphinx_rtd_theme",
+    "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
 ]
 
