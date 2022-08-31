@@ -24,7 +24,7 @@ def check_and_install_poetry():
         pass
 
     run(
-        "curl -sSL https://install.python-poetry.org | python3 - --preview",
+        "curl -sSL https://install.python-poetry.org | python3 -",
         shell=True,  # nosec
     )
 

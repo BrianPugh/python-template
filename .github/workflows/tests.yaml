@@ -46,7 +46,6 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
-          installation-arguments: --preview
 
       #----------------------------------------------
       #       load cached venv if cache exists
