@@ -81,13 +81,21 @@ jobs:
           # exit-zero treats all errors as warnings
           python -m flake8 . --count --exit-zero --statistics
 
+      - name: Check tests folder existence
+        id: check_test_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "tests"
+
       - name: Run tests
+        if: steps.check_test_files.outputs.files_exists == 'true'
         run: |
           source .venv/bin/activate
           python -m pytest --cov=pythontemplate --cov-report term --cov-report xml --cov-config .coveragerc --junitxml=testresults.xml
           coverage report
 
       - name: Upload coverage to Codecov
+        if: steps.check_test_files.outputs.files_exists == 'true'
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
