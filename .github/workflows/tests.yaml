@@ -71,6 +71,11 @@ jobs:
         run: poetry install --no-interaction
 
       #----------------------------------------------
+      #              run pre-commit
+      #----------------------------------------------
+      - uses: pre-commit/action@v2.0.3
+
+      #----------------------------------------------
       #              run test suite
       #----------------------------------------------
       - name: Sanity check with flake8
