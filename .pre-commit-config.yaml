@@ -111,3 +111,8 @@ repos:
           - flake8-docstrings
           - flake8-implicit-str-concat
           - flake8-use-pathlib
+
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.271
+    hooks:
+      - id: pyright

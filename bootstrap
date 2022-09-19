@@ -201,6 +201,7 @@ def main():
     # Move README_TEMPLATE.rst
     (repo / "README_TEMPLATE.rst").replace(repo / "README.rst")
 
+    run(["poetry", "config", "virtualenvs.in-project", "true", "--local"])
     run(["poetry", "install"])
     run(["poetry", "run", "python", "-m", "pre_commit", "install"])
 
