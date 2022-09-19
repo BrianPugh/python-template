@@ -67,3 +67,7 @@ exclude_lines = [
 exclude_dirs = [
     "tests",
 ]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
