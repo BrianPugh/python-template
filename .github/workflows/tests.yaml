@@ -59,6 +59,9 @@ jobs:
           # exit-zero treats all errors as warnings
           python -m flake8 . --count --exit-zero --statistics
 
+      - name: Pre-commit
+        uses: pre-commit/action@v2.0.3
+
       - name: Check tests folder existence
         id: check_test_files
         uses: andstor/file-existence-action@v1
