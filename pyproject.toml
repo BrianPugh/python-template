@@ -29,12 +29,19 @@ sphinx_rtd_theme = "~1.0.0"
 [tool.poetry.group.dev.dependencies]
 coverage = {extras = ["toml"], version = "^5.1"}
 flake8 = "^4.0.1"
-ipdb = "^0.13.9"
 poetry-dynamic-versioning = "^0.16.0"
 pre_commit = "^2.16.0"
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 pytest-mock = "^3.7.0"
+
+[tool.poetry.group.debug]
+optional = true
+
+[tool.poetry.group.debug.dependencies]
+ipdb = "^0.13.9"
+line_profiler = "^3.5.1"
+
 
 [tool.coverage.run]
 branch = true
