@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Cache $HOME/.local # Significantly speeds up Poetry Install
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.local
           key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/tests.yml') }}
@@ -58,6 +58,14 @@ jobs:
           python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings
           python -m flake8 . --count --exit-zero --statistics
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit/
+          key: pre-commit-4|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Pre-commit run
+        run: pre-commit run --show-diff-on-failure --color=always --all-files
 
       - name: Check tests folder existence
         id: check_test_files
