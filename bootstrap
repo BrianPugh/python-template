@@ -162,10 +162,6 @@ def main():
         Path("Dockerfile").unlink()
         Path(".dockerignore").unlink()
         Path(".github/workflows/docker.yaml").unlink()
-    else:
-        # update .gitignore to:
-        #    * Remove poetry.lock, non-library projects should include it.
-        remove_lines_in_file(".gitignore", ["/poetry.lock"])
 
     def replace(string):
         """Replace whole words only."""
