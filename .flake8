@@ -19,3 +19,9 @@ exclude =
     .env
     venv
     .venv
+
+extend-immutable-calls =
+    Argument
+    Arg
+    Option
+    Opt
