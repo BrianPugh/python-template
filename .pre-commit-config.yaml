@@ -12,7 +12,7 @@ repos:
         args: ["-c", "pyproject.toml"]
 
   - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
+    rev: 5.12.0
     hooks:
       - id: isort
         name: isort
@@ -23,7 +23,7 @@ repos:
         args: ["--profile=black"]
 
   - repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 23.1.0
     hooks:
       - id: black
         args:
@@ -33,7 +33,7 @@ repos:
         types: [python]
 
   - repo: https://github.com/asottile/blacken-docs
-    rev: v1.12.1
+    rev: 1.13.0
     hooks:
       - id: blacken-docs
 
@@ -43,7 +43,7 @@ repos:
       - id: nbstripout
 
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.5.3
+    rev: 1.6.1
     hooks:
       - id: nbqa-isort
         args: ["--profile=black"]
@@ -57,7 +57,7 @@ repos:
       - id: nbqa-flake8
 
   - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
       - id: python-check-blanket-noqa
       - id: python-check-blanket-type-ignore
@@ -113,6 +113,6 @@ repos:
           - flake8-use-pathlib
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.283
+    rev: v1.1.292
     hooks:
       - id: pyright
