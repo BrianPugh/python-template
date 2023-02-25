@@ -146,6 +146,9 @@ def main():
             "GIT_USERNAME and GIT_REPONAME in README.rst"
         )
 
+    ########################
+    # User Questions Begin #
+    ########################
     replacements["YOUR_NAME_HERE"] = validate_input("Enter your name", is_not_empty)
     replacements["pythontemplate"] = validate_input(
         "Python Module Name", good_module_name
@@ -157,11 +160,25 @@ def main():
     )
     is_library = is_library in yes_terms
 
+    is_typed = validate_input(
+        "Are you going to add type hints? [default: yes]",
+        is_boolean,
+        default="yes",
+    )
+
+    ######################
+    # User Questions End #
+    ######################
+
     if is_library:
         # Don't need docker for library.
         Path("Dockerfile").unlink()
         Path(".dockerignore").unlink()
         Path(".github/workflows/docker.yaml").unlink()
+
+    if not is_typed:
+        # Remove the py.typed file
+        Path("pythontemplate/py.typed").unlink()
 
     def replace(string):
         """Replace whole words only."""
