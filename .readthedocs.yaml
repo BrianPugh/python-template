@@ -5,10 +5,14 @@
 version: 2
 
 python:
-  version: 3.8
   install:
     - method: pip
       path: .
+
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.10"
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
