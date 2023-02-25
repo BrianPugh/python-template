@@ -30,6 +30,8 @@ Features
 
   * If not installed, Poetry will automatically be installed when running ``bootstrap``.
 
+* Optional CLI boilerplate using ``typer``.
+
 * `Sphinx`_ + `ReadTheDocs`_.
 
   * Goto `ReadTheDocs Dashboard`_ and click on "Import a Project".

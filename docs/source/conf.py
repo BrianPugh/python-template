@@ -96,3 +96,12 @@ html_theme_options = {
     "includehidden": True,
     "titles_only": False,
 }
+
+html_context = {
+    # Github options
+    "display_github": True,
+    "github_user": "GIT_USERNAME",
+    "github_repo": "GIT_REPONAME",
+    "github_version": "main",
+    "conf_py_path": "/docs/source/",
+}
