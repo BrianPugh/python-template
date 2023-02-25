@@ -60,7 +60,7 @@ jobs:
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
-          installer-parallel: true
+          installer-parallel: false # Currently there seems to be some race-condition in windows
 
       - name: Install library
         run: poetry install --no-interaction

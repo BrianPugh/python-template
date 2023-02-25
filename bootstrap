@@ -2,6 +2,7 @@
 # Only use builtin libraries for this script
 import re
 import readline
+import shutil
 import subprocess  # nosec
 from datetime import date
 from pathlib import Path
@@ -96,9 +97,9 @@ def good_class_name(response):
         raise BadResponse("first letter should be capitalized.")
 
 
-def remove_lines_in_file(file, lines_to_remove):
+def remove_lines_in_file(file, *lines_to_remove):
     file = Path(file)
-    lines_to_remove = [line + "\n" for line in lines_to_remove]
+    lines_to_remove = {line + "\n" for line in lines_to_remove}
     with file.open("r+") as f:
         lines = f.readlines()
         f.seek(0)
@@ -165,6 +166,14 @@ def main():
         is_boolean,
         default="yes",
     )
+    is_typed = is_typed in yes_terms
+
+    include_cli = validate_input(
+        "Would you like to include a CLI using Typer? [default: yes]",
+        is_boolean,
+        default="yes",
+    )
+    include_cli = include_cli in yes_terms
 
     ######################
     # User Questions End #
@@ -179,6 +188,14 @@ def main():
     if not is_typed:
         # Remove the py.typed file
         Path("pythontemplate/py.typed").unlink()
+
+    if not include_cli:
+        # Delete CLI-replated files
+        Path("pythontemplate/__main__.py").unlink()
+        shutil.rmtree("pythontemplate/cli")
+        remove_lines_in_file(
+            "pyproject.toml", 'pythontemplate = "pythontemplate.cli.main:run_app"'
+        )
 
     def replace(string):
         """Replace whole words only."""
@@ -215,6 +232,11 @@ def main():
     (repo / "README_TEMPLATE.rst").replace(repo / "README.rst")
 
     run(["poetry", "config", "virtualenvs.in-project", "true", "--local"])
+
+    if not include_cli:
+        run(["poetry", "remove", "typer"])
+
+    run(["poetry", "update"])
     run(["poetry", "install"])
     run(["poetry", "run", "python", "-m", "pre_commit", "install"])
 
