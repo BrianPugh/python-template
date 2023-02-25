@@ -151,7 +151,7 @@ def main():
     # User Questions Begin #
     ########################
     replacements["YOUR_NAME_HERE"] = validate_input("Enter your name", is_not_empty)
-    replacements["pythontemplate"] = validate_input(
+    replacements["pythontemplate"] = module_name = validate_input(
         "Python Module Name", good_module_name
     )
     is_library = validate_input(
@@ -193,7 +193,7 @@ def main():
         # Delete CLI-replated files
         Path("pythontemplate/__main__.py").unlink()
         shutil.rmtree("pythontemplate/cli")
-        replacements['pythontemplate = "pythontemplate.cli.main:run_app"'] = ""
+        replacements[f'{module_name} = "{module_name}.cli.main:run_app"'] = ""
 
     def replace(string):
         """Replace whole words only."""
