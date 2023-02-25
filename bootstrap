@@ -97,9 +97,9 @@ def good_class_name(response):
         raise BadResponse("first letter should be capitalized.")
 
 
-def remove_lines_in_file(file, lines_to_remove):
+def remove_lines_in_file(file, *lines_to_remove):
     file = Path(file)
-    lines_to_remove = [line + "\n" for line in lines_to_remove]
+    lines_to_remove = {line + "\n" for line in lines_to_remove}
     with file.open("r+") as f:
         lines = f.readlines()
         f.seek(0)
@@ -151,7 +151,7 @@ def main():
     # User Questions Begin #
     ########################
     replacements["YOUR_NAME_HERE"] = validate_input("Enter your name", is_not_empty)
-    replacements["pythontemplate"] = module_name = validate_input(
+    replacements["pythontemplate"] = validate_input(
         "Python Module Name", good_module_name
     )
     is_library = validate_input(
@@ -193,7 +193,9 @@ def main():
         # Delete CLI-replated files
         Path("pythontemplate/__main__.py").unlink()
         shutil.rmtree("pythontemplate/cli")
-        replacements[f'{module_name} = "{module_name}.cli.main:run_app"'] = ""
+        remove_lines_in_file(
+            "pyproject.toml", 'pythontemplate = "pythontemplate.cli.main:run_app"'
+        )
 
     def replace(string):
         """Replace whole words only."""
