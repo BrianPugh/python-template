@@ -8,8 +8,8 @@ from datetime import date
 from pathlib import Path
 
 
-class BadResponse(Exception):
-    """User gave a bad response."""
+class BadResponseError(Exception):
+    """User gave a response that does not agree with rule set."""
 
 
 def run(cmds, **kwargs):
@@ -18,12 +18,9 @@ def run(cmds, **kwargs):
 
 
 def check_and_install_poetry():
-    try:
-        subprocess.check_output(["which", "poetry"])  # nosec
+    poetry_location = shutil.which("poetry")
+    if poetry_location:
         return
-    except subprocess.CalledProcessError:
-        pass
-
     run(
         "curl -sSL https://install.python-poetry.org | python3 -",
         shell=True,  # nosec
@@ -48,7 +45,7 @@ def validate_input(prompt, validate=None, default=""):
         try:
             validate(response)
             break
-        except BadResponse as e:
+        except BadResponseError as e:
             print(f'"{response}" {e}')
     return response
 
@@ -64,37 +61,37 @@ no_terms = {"no", "n", "false", "f", "0"}
 def is_boolean(response):
     response = response.lower()
     if response not in yes_terms.union(no_terms):
-        raise BadResponse
+        raise BadResponseError
 
 
 def is_identifier(response):
     if not response.isidentifier():
-        raise BadResponse("is not a valid python identifier.")
+        raise BadResponseError("is not a valid python identifier.")
 
 
 def is_lower(response):
     if response.lower() != response:
-        raise BadResponse("should be all lower case.")
+        raise BadResponseError("should be all lower case.")
 
 
 def is_not_empty(response):
     if not response:
-        raise BadResponse("Cannot be empty.")
+        raise BadResponseError("Cannot be empty.")
 
 
 def good_module_name(response):
     is_identifier(response)
     is_lower(response)
     if "_" in response:
-        raise BadResponse("should not contain an underscore _")
+        raise BadResponseError("should not contain an underscore _")
     if len(response) > 20:
-        raise BadResponse("is too long (max 20 char limit).")
+        raise BadResponseError("is too long (max 20 char limit).")
 
 
 def good_class_name(response):
     is_identifier(response)
     if not response[0].isupper():
-        raise BadResponse("first letter should be capitalized.")
+        raise BadResponseError("first letter should be capitalized.")
 
 
 def remove_lines_in_file(file, *lines_to_remove):
