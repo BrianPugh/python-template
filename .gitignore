@@ -99,6 +99,13 @@ instance/
 # PyBuilder
 target/
 
+# Pycharm
+/.idea/dictionaries
+/.idea/modules.xml
+/.idea/shelf
+/.idea/usage.statistics.xml
+/.idea/workspace.xml
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
