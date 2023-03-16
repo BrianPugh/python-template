@@ -62,3 +62,8 @@ repos:
     rev: v2.2.4
     hooks:
       - id: codespell
+
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.299
+    hooks:
+      - id: pyright
