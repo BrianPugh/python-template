@@ -78,6 +78,7 @@ venvPath = "."
 venv = ".venv"
 
 [tool.ruff]
+target-version = 'py38'
 select = [
     "B",  # flake8-bugbear
     "C4", # flake8-comprehensions
