@@ -17,7 +17,7 @@ repos:
           - "--target-version=py311"
         types: [python]
 
-  - repo: https://github.com/asottile/blacken-docs
+  - repo: https://github.com/adamchainz/blacken-docs
     rev: 1.13.0
     hooks:
       - id: blacken-docs
