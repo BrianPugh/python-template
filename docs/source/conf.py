@@ -105,3 +105,7 @@ html_context = {
     "github_version": "main",
     "conf_py_path": "/docs/source/",
 }
+
+html_css_files = [
+    "custom.css",
+]
