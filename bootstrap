@@ -14,7 +14,7 @@ class BadResponseError(Exception):
 
 def run(cmds, **kwargs):
     """Run bash cmd without capturing stdout."""
-    subprocess.run(cmds, capture_output=False, check=True, **kwargs)  # nosec
+    subprocess.run(cmds, capture_output=False, check=True, **kwargs)  # noqa: S603
 
 
 def check_and_install_poetry():
@@ -23,7 +23,7 @@ def check_and_install_poetry():
         return
     run(
         "curl -sSL https://install.python-poetry.org | python3 -",
-        shell=True,  # nosec
+        shell=True,  # noqa: S604
     )
 
 
@@ -51,7 +51,7 @@ def validate_input(prompt, validate=None, default=""):
 
 
 def git(*args):
-    return subprocess.check_output(["git"] + list(args))  # nosec
+    return subprocess.check_output(["git"] + list(args))  # noqa: S603
 
 
 yes_terms = {"yes", "y", "true", "t", "1"}
@@ -139,18 +139,13 @@ def main():
             replacements["GIT_REPONAME"],
         ) = git_remote_to_username_repo(git_remote_url)
     except ValueError:
-        print(
-            "Unable to get github URL. You will manually have to replace "
-            "GIT_USERNAME and GIT_REPONAME in README.rst"
-        )
+        print("Unable to get github URL. You will manually have to replace GIT_USERNAME and GIT_REPONAME in README.rst")
 
     ########################
     # User Questions Begin #
     ########################
     replacements["YOUR_NAME_HERE"] = validate_input("Enter your name", is_not_empty)
-    replacements["pythontemplate"] = validate_input(
-        "Python Module Name", good_module_name
-    )
+    replacements["pythontemplate"] = validate_input("Python Module Name", good_module_name)
     is_library = validate_input(
         "Is this going to be a library? [default: yes]",
         is_boolean,
@@ -190,9 +185,7 @@ def main():
         # Delete CLI-replated files
         Path("pythontemplate/__main__.py").unlink()
         shutil.rmtree("pythontemplate/cli")
-        remove_lines_in_file(
-            "pyproject.toml", 'pythontemplate = "pythontemplate.cli.main:run_app"'
-        )
+        remove_lines_in_file("pyproject.toml", 'pythontemplate = "pythontemplate.cli.main:run_app"')
 
     def replace(string):
         """Replace whole words only."""
@@ -201,9 +194,7 @@ def main():
             return replacements[match.group(0)]
 
         # notice that the 'this' in 'thistle' is not matched
-        return re.sub(
-            "|".join(r"\b%s\b" % re.escape(s) for s in replacements), _replace, string
-        )
+        return re.sub("|".join(r"\b%s\b" % re.escape(s) for s in replacements), _replace, string)
 
     repo = Path(__file__).parent
     bootstrap_file = repo / "bootstrap"

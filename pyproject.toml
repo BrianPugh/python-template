@@ -127,7 +127,7 @@ ignore = [
     "F401",
     "TRY003",  # Avoid specifying messages outside exception class; overly strict, especially for ValueError
 ]
-line-length = 88  # Must agree with Black
+line-length = 120  # Must agree with Black
 
 [tool.ruff.flake8-bugbear]
 extend-immutable-calls = [

@@ -3,9 +3,7 @@ from typer import Option
 
 import pythontemplate
 
-app = typer.Typer(
-    no_args_is_help=True, pretty_exceptions_enable=False, add_completion=False
-)
+app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False, add_completion=False)
 # Add functions from other files like:
 # app.command()(my_subcommand)
 
