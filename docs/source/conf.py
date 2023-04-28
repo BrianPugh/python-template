@@ -98,6 +98,10 @@ def linkcode_resolve(domain, info):
     if domain != "py":
         raise ValueError("expected only Python objects")
 
+    if not info.get("module"):
+        # Documented via py:function::
+        return
+
     mod = importlib.import_module(info["module"])
     if "." in info["fullname"]:
         objname, attrname = info["fullname"].split(".")
