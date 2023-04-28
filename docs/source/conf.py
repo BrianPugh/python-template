@@ -74,8 +74,13 @@ napoleon_attr_annotations = True
 
 # Autodoc
 autodoc_default_options = {
+    "members": True,
     "member-order": "bysource",
+    "special-members": "__init__",
+    "undoc-members": True,
+    "exclude-members": "__weakref__",
 }
+autoclass_content = "init"
 
 # LinkCode
 code_url = f"https://github.com/GIT_USERNAME/GIT_REPONAME/blob/{git_commit}"
