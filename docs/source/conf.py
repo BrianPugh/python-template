@@ -5,15 +5,21 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # -- Path setup --------------------------------------------------------------
-
+import importlib
+import inspect
 import sys
 from datetime import date
 from pathlib import Path
+
+import git
 
 sys.path.insert(0, str(Path("../..").absolute()))
 
 
 from pythontemplate import __version__
+
+git_repo = git.Repo("../..")  # type: ignore[reportPrivateImportUsage]
+git_commit = git_repo.head.commit
 
 # -- Project information -----------------------------------------------------
 
@@ -36,6 +42,7 @@ extensions = [
     "sphinx_rtd_theme",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx.ext.linkcode",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -63,6 +70,59 @@ napoleon_use_rtype = True
 napoleon_preprocess_types = False
 napoleon_type_aliases = None
 napoleon_attr_annotations = True
+
+# Autodoc
+autodoc_default_options = {
+    "member-order": "bysource",
+}
+
+# LinkCode
+code_url = f"https://github.com/GIT_USERNAME/GIT_REPONAME/blob/{git_commit}"
+
+
+def linkcode_resolve(domain, info):
+    """Link code to github.
+
+    Modified from:
+        https://github.com/python-websockets/websockets/blob/778a1ca6936ac67e7a3fe1bbe585db2eafeaa515/docs/conf.py#L100-L134
+    """
+    # Non-linkable objects from the starter kit in the tutorial.
+    if domain == "js" or info["module"] == "connect4":
+        return
+
+    if domain != "py":
+        raise ValueError("expected only Python objects")
+
+    mod = importlib.import_module(info["module"])
+    if "." in info["fullname"]:
+        objname, attrname = info["fullname"].split(".")
+        obj = getattr(mod, objname)
+        try:
+            # object is a method of a class
+            obj = getattr(obj, attrname)
+        except AttributeError:
+            # object is an attribute of a class
+            return None
+    else:
+        obj = getattr(mod, info["fullname"])
+
+    try:
+        file = inspect.getsourcefile(obj)
+        lines = inspect.getsourcelines(obj)
+    except TypeError:
+        # e.g. object is a typing.Union
+        return None
+    if file is None:
+        return None
+    file = Path(file).resolve()
+    file = file.relative_to(Path("..").resolve())
+    if file.parts[0] != "pythontemplate":
+        # e.g. object is a typing.NewType
+        return None
+    start, end = lines[1], lines[1] + len(lines[0]) - 1
+
+    return f"{code_url}/{file}#L{start}-L{end}"
+
 
 # -- Options for HTML output -------------------------------------------------
 
