@@ -8,6 +8,7 @@ Welcome to pythontemplate's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   self
    Installation
    Overview
    api
