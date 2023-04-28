@@ -29,6 +29,7 @@ typer = ">=0.7.0, <1.0.0"
 [tool.poetry.group.docs.dependencies]
 sphinx = "~4.5.0"
 sphinx_rtd_theme = "~1.0.0"
+gitpython = "^3.1.31"
 
 [tool.poetry.group.dev.dependencies]
 coverage = {extras = ["toml"], version = "^5.1"}
