@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path("../..").absolute()))
 
 from pythontemplate import __version__
 
-git_repo = git.Repo("../..")  # type: ignore[reportPrivateImportUsage]
+git_repo = git.Repo(".", search_parent_directories=True)  # type: ignore[reportPrivateImportUsage]
 git_commit = git_repo.head.commit
 
 # -- Project information -----------------------------------------------------
@@ -123,8 +123,7 @@ def linkcode_resolve(domain, info):
         return None
     if file is None:
         return None
-    file = Path(file).resolve()
-    file = file.relative_to(Path("..").resolve())
+    file = Path(file).resolve().relative_to(git_repo.working_dir)
     if file.parts[0] != "pythontemplate":
         # e.g. object is a typing.NewType
         return None
