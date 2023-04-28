@@ -92,7 +92,7 @@ def linkcode_resolve(domain, info):
         https://github.com/python-websockets/websockets/blob/778a1ca6936ac67e7a3fe1bbe585db2eafeaa515/docs/conf.py#L100-L134
     """
     # Non-linkable objects from the starter kit in the tutorial.
-    if domain == "js" or info["module"] == "connect4":
+    if domain == "js":
         return
 
     if domain != "py":
