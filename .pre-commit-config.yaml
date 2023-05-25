@@ -1,7 +1,7 @@
 exclude: ^(poetry.lock|.idea/)
 repos:
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.0.269"
+    rev: "v0.0.270"
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -69,6 +69,6 @@ repos:
       - id: codespell
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.309
+    rev: v1.1.310
     hooks:
       - id: pyright
