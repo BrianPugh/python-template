@@ -202,6 +202,8 @@ def main():
         # Delete cython-related files & config
         Path(".github/workflows/build_wheels.yaml").unlink()
         Path("build.py").unlink()
+        Path("pythontemplate/_c_extension.pyx").unlink()
+        Path("pythontemplate/cpythontemplate.pxd").unlink()
         shutil.rmtree("pythontemplate/_c_src")
         remove_lines_in_file("pyproject.toml", "script = 'build.py'")
 
@@ -211,7 +213,7 @@ def main():
 
         with Path("pyproject.toml").open("w") as f:
             for line in pyproject_contents:
-                line.replace(', "Cython", "setuptools>=61.0"', "")
+                line = line.replace(', "Cython", "setuptools>=61.0"', "")
                 f.write(line)
 
     def replace(string):
