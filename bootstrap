@@ -204,9 +204,15 @@ def main():
         Path("build.py").unlink()
         shutil.rmtree("pythontemplate/_c_src")
         remove_lines_in_file("pyproject.toml", "script = 'build.py'")
-        replacements[
-            'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5", "cython", "setuptools>=61.0"]'
-        ] = '["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5"]'
+
+        # a bit crude of a way to update the "tool.poetry.requires" field.
+        with Path("pyproject.toml").open() as f:
+            pyproject_contents = f.readlines()
+
+        with Path("pyproject.toml").open("w") as f:
+            for line in pyproject_contents:
+                line.replace(', "Cython", "setuptools>=61.0"', "")
+                f.write(line)
 
     def replace(string):
         """Replace whole words only."""
