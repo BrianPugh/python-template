@@ -1,5 +1,5 @@
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5"]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5", "Cython", "setuptools>=61.0"]
 build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry-dynamic-versioning]
@@ -17,6 +17,11 @@ description = ""
 authors = ["YOUR_NAME_HERE"]
 readme = "README.rst"
 packages = [{include = "pythontemplate"}]
+include = ["pythontemplate/*.so", "pythontemplate/*.pyd"]  # Compiled extensions
+
+[tool.poetry.build]
+generate-setup-file = false
+script = 'build.py'
 
 [tool.poetry.scripts]
 pythontemplate = "pythontemplate.cli.main:run_app"

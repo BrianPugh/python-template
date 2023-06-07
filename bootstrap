@@ -146,6 +146,7 @@ def main():
     ########################
     replacements["YOUR_NAME_HERE"] = validate_input("Enter your name", is_not_empty)
     replacements["pythontemplate"] = validate_input("Python Module Name", good_module_name)
+    replacements["cpythontemplate"] = "c" + replacements["pythontemplate"]
     is_library = validate_input(
         "Is this going to be a library? [default: yes]",
         is_boolean,
@@ -167,6 +168,12 @@ def main():
     )
     include_cli = include_cli in yes_terms
 
+    use_cython = validate_input(
+        "Will your project use Cython? [default: no]",
+        is_boolean,
+        default="no",
+    )
+
     ######################
     # User Questions End #
     ######################
@@ -182,10 +189,23 @@ def main():
         Path("pythontemplate/py.typed").unlink()
 
     if not include_cli:
-        # Delete CLI-replated files
+        # Delete CLI-replated files & config
         Path("pythontemplate/__main__.py").unlink()
         shutil.rmtree("pythontemplate/cli")
         remove_lines_in_file("pyproject.toml", 'pythontemplate = "pythontemplate.cli.main:run_app"')
+
+    if use_cython:
+        # Forgo nice simple poetry action for CIBuildWheel.
+        Path(".github/workflows/deploy.yaml").unlink()
+    else:
+        # Delete cython-related files & config
+        Path(".github/workflows/build_wheels.yaml").unlink()
+        Path("build.py").unlink()
+        shutil.rmtree("pythontemplate/_c_src")
+        remove_lines_in_file("pyproject.toml", "script = 'build.py'")
+        replacements[
+            'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5", "cython", "setuptools>=61.0"]'
+        ] = '["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5"]'
 
     def replace(string):
         """Replace whole words only."""
@@ -199,9 +219,12 @@ def main():
     repo = Path(__file__).parent
     bootstrap_file = repo / "bootstrap"
     files: list[Path] = list(repo.rglob("*.py"))
+    files.extend(repo.rglob("*.pyx"))
+    files.extend(repo.rglob("*.pxd"))
     files.extend(repo.rglob("*.yaml"))
     files.extend(repo.rglob("*.rst"))
     files.append(Path("pyproject.toml"))
+    files.append(Path(".gitignore"))
 
     if not is_library:
         files.append(Path("Dockerfile"))
