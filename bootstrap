@@ -173,6 +173,7 @@ def main():
         is_boolean,
         default="no",
     )
+    use_cython = use_cython in yes_terms
 
     ######################
     # User Questions End #
