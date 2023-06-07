@@ -12,6 +12,7 @@ Then run:
 .. code-block:: bash
 
    git clone YOUR_REPO
+   # then cd into your local repo, and run:
    ./bootstrap
 
 And follow the on-screen prompts. ``bootstrap`` uses some git data (like detecting your username and repository name), so cloning the repo generated from the template is necessary.

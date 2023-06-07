@@ -1,7 +1,7 @@
 #ifndef FOO_H
 #define FOO_H
 
-#ifndef __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
