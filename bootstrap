@@ -237,13 +237,13 @@ def main():
 
     if not is_library:
         files.append(Path("Dockerfile"))
-    for py_file in files:
-        contents = py_file.read_text()
+    for file in files:
+        contents = file.read_text()
         contents = replace(contents)
-        py_file.write_text(contents)
-        if py_file.stem in replacements:
-            dst = py_file.with_name(replacements[py_file.stem] + ".py")
-            py_file.replace(dst)
+        file.write_text(contents)
+        if file.stem in replacements:
+            dst = file.with_name(replacements[file.stem] + file.suffix)
+            file.replace(dst)
 
     # Move the app folder
     (repo / "pythontemplate").replace(repo / replacements["pythontemplate"])
