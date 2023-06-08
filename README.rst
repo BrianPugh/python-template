@@ -80,7 +80,7 @@ This template has an option to add boilerplate for Cython_.
 Cython is a programming language that simplifies the creation of C extensions for Python.
 The Cython documentation is quite good; the aim of this section is to explain what this
 template sets up, and what actions will still need to be performed by you.
-This explanation assumes the following you are familiar with C; I don't program in C++, so this template is intended for C code.
+This explanation assumes you are familiar with C.
 Replace any reference here to ``pythontemplate`` with your project name.
 
 1. Place all C and header files in the ``pythontemplate/_c_src`` directory.
@@ -88,16 +88,15 @@ Replace any reference here to ``pythontemplate`` with your project name.
 
 2. Update ``pythontemplate/cpythontemplate.pxd`` with header information from the files in (1).
    Example of common definitions (functions, structs, and enums) are provided.
-   Think of ``*.pxd`` as a Cython header file; this makes it so you can access pure C functions in Cython code.
-   This file will be compiled into a package that can be imported with ``cimport`` in a ``.pyx`` file.
+   Think of ``*.pxd`` as a header file that allows Cython ``.pyx`` code to access pure C files.
+   This file will be compiled into a package that can be imported in a ``.pyx`` file via ``cimport``.
+   If you don't plan on using any explicit C files, you may delete this file.
 
 3. Add Cython code to ``pythontemplate/_c_extension.pyx``. Some class starter code is provided.
-   This is where a good pythonic interface should be written.
+   This is where a good pythonic interface (functions and classes) should be written.
 
-4. Optionally update ``build.py`` with compiler options.
-   ``build.py`` runs during setup/installation.
-   The default ``build.py`` should offer a good starting point for most projects.
-   It performs the following:
+4. Optionally tweak ``build.py`` (runs at setup/installation) with compiler options.
+   The default ``build.py`` offers a good, working starting point for most projects and performs the following:
 
    a. Recursively searches for all C files in ``pythontemplate/_c_src/``.
       To change this action, modify the variable ``c_files``.
