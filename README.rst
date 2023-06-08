@@ -36,6 +36,8 @@ Features
 
 * Optional command line interface boilerplate using ``typer``.
 
+* Optional C binding support via Cython.
+
 * `Sphinx`_ + `ReadTheDocs`_.
 
   * To setup, goto `ReadTheDocs Dashboard`_ and click on "Import a Project".
@@ -111,6 +113,7 @@ Replace any reference here to ``pythontemplate`` with your project name.
    binaries for all major Python versions, operating systems, and computer architectures.
    It will also create a Source Distribution (sdist).
    Finally, on git semver tags (``vX.X.X``), it will upload all the resulting wheels to pypi.
+
 
 Reference
 =========
