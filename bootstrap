@@ -6,6 +6,7 @@ import shutil
 import subprocess  # nosec
 from datetime import date
 from pathlib import Path
+from typing import List, Union
 
 
 class BadResponseError(Exception):
@@ -198,23 +199,35 @@ def main():
     if use_cython:
         # Forgo nice simple poetry action for CIBuildWheel.
         Path(".github/workflows/deploy.yaml").unlink()
-    else:
-        # Delete cython-related files & config
-        Path(".github/workflows/build_wheels.yaml").unlink()
-        Path("build.py").unlink()
-        Path("pythontemplate/_c_extension.pyx").unlink()
-        Path("pythontemplate/cpythontemplate.pxd").unlink()
-        shutil.rmtree("pythontemplate/_c_src")
-        remove_lines_in_file("pyproject.toml", "script = 'build.py'")
 
-        # a bit crude of a way to update the "tool.poetry.requires" field.
+        # Add Cython-related configurations to pyproject.toml
         with Path("pyproject.toml").open() as f:
             pyproject_contents = f.readlines()
 
         with Path("pyproject.toml").open("w") as f:
             for line in pyproject_contents:
-                line = line.replace(', "Cython", "setuptools>=61.0"', "")
+                if line == 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5"]\n':
+                    line = 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5", "Cython", "setuptools>=61.0"]\n'
                 f.write(line)
+
+                if line == "[tool.poetry.build]\n":
+                    f.write("script = 'build.py'\n")
+    else:
+        # Delete cython-related files
+        paths_to_delete: List[Union[str, Path]] = [
+            ".github/workflows/build_wheels.yaml",
+            "build.py",
+            "pythontemplate/_c_src",
+        ]
+        paths_to_delete.extend(Path("pythontemplate").rglob("*.pyx"))
+        paths_to_delete.extend(Path("pythontemplate").rglob("*.pxd"))
+
+        for path_to_delete in paths_to_delete:
+            path_to_delete = Path(path_to_delete)
+            if path_to_delete.is_file():
+                path_to_delete.unlink()
+            else:
+                shutil.rmtree(str(path_to_delete))
 
     def replace(string):
         """Replace whole words only."""
