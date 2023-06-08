@@ -8,7 +8,7 @@ allowed_to_fail = False
 
 
 def build_cython_extensions():
-    from Cython.Build import build_ext, cythonize
+    from Cython.Build import build_ext, cythonize  # pyright: ignore [reportMissingImports]
     from setuptools import Extension
     from setuptools.dist import Distribution
 
