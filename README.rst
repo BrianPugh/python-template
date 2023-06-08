@@ -21,6 +21,7 @@ Compatibility
 =============
 
 This template only works on MacOS/Linux/WSL, it *will not work natively on windows*.
+The resulting project, however, may be windows-compatible.
 
 Features
 ========
