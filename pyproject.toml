@@ -17,6 +17,10 @@ description = ""
 authors = ["YOUR_NAME_HERE"]
 readme = "README.rst"
 packages = [{include = "pythontemplate"}]
+include = ["pythontemplate/*.so", "pythontemplate/*.pyd"]  # Compiled extensions
+
+[tool.poetry.build]
+generate-setup-file = false
 
 [tool.poetry.scripts]
 pythontemplate = "pythontemplate.cli.main:run_app"

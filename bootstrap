@@ -6,6 +6,7 @@ import shutil
 import subprocess  # nosec
 from datetime import date
 from pathlib import Path
+from typing import List, Union
 
 
 class BadResponseError(Exception):
@@ -146,6 +147,7 @@ def main():
     ########################
     replacements["YOUR_NAME_HERE"] = validate_input("Enter your name", is_not_empty)
     replacements["pythontemplate"] = validate_input("Python Module Name", good_module_name)
+    replacements["cpythontemplate"] = "c" + replacements["pythontemplate"]
     is_library = validate_input(
         "Is this going to be a library? [default: yes]",
         is_boolean,
@@ -167,6 +169,13 @@ def main():
     )
     include_cli = include_cli in yes_terms
 
+    use_cython = validate_input(
+        "Will your project use Cython? [default: no]",
+        is_boolean,
+        default="no",
+    )
+    use_cython = use_cython in yes_terms
+
     ######################
     # User Questions End #
     ######################
@@ -182,10 +191,43 @@ def main():
         Path("pythontemplate/py.typed").unlink()
 
     if not include_cli:
-        # Delete CLI-replated files
+        # Delete CLI-replated files & config
         Path("pythontemplate/__main__.py").unlink()
         shutil.rmtree("pythontemplate/cli")
         remove_lines_in_file("pyproject.toml", 'pythontemplate = "pythontemplate.cli.main:run_app"')
+
+    if use_cython:
+        # Forgo nice simple poetry action for CIBuildWheel.
+        Path(".github/workflows/deploy.yaml").unlink()
+
+        # Add Cython-related configurations to pyproject.toml
+        with Path("pyproject.toml").open() as f:
+            pyproject_contents = f.readlines()
+
+        with Path("pyproject.toml").open("w") as f:
+            for line in pyproject_contents:
+                if line == 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5"]\n':
+                    line = 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5", "Cython", "setuptools>=61.0"]\n'
+                f.write(line)
+
+                if line == "[tool.poetry.build]\n":
+                    f.write("script = 'build.py'\n")
+    else:
+        # Delete cython-related files
+        paths_to_delete: List[Union[str, Path]] = [
+            ".github/workflows/build_wheels.yaml",
+            "build.py",
+            "pythontemplate/_c_src",
+        ]
+        paths_to_delete.extend(Path("pythontemplate").rglob("*.pyx"))
+        paths_to_delete.extend(Path("pythontemplate").rglob("*.pxd"))
+
+        for path_to_delete in paths_to_delete:
+            path_to_delete = Path(path_to_delete)
+            if path_to_delete.is_file():
+                path_to_delete.unlink()
+            else:
+                shutil.rmtree(str(path_to_delete))
 
     def replace(string):
         """Replace whole words only."""
@@ -199,19 +241,22 @@ def main():
     repo = Path(__file__).parent
     bootstrap_file = repo / "bootstrap"
     files: list[Path] = list(repo.rglob("*.py"))
+    files.extend(repo.rglob("*.pyx"))
+    files.extend(repo.rglob("*.pxd"))
     files.extend(repo.rglob("*.yaml"))
     files.extend(repo.rglob("*.rst"))
     files.append(Path("pyproject.toml"))
+    files.append(Path(".gitignore"))
 
     if not is_library:
         files.append(Path("Dockerfile"))
-    for py_file in files:
-        contents = py_file.read_text()
+    for file in files:
+        contents = file.read_text()
         contents = replace(contents)
-        py_file.write_text(contents)
-        if py_file.stem in replacements:
-            dst = py_file.with_name(replacements[py_file.stem] + ".py")
-            py_file.replace(dst)
+        file.write_text(contents)
+        if file.stem in replacements:
+            dst = file.with_name(replacements[file.stem] + file.suffix)
+            file.replace(dst)
 
     # Move the app folder
     (repo / "pythontemplate").replace(repo / replacements["pythontemplate"])
