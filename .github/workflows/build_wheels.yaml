@@ -30,9 +30,12 @@ jobs:
           virtualenvs-create: false
           virtualenvs-in-project: false
 
+      - name: Build sdist
+        run: poetry build --format=sdist
+
       - uses: actions/upload-artifact@v3
         with:
-          path: wheelhouse/*.whl
+          path: dist/*.tar.gz
 
   build_wheels_windows:
     name: "${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ matrix.cibw_build }}"
