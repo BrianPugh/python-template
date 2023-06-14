@@ -8,9 +8,12 @@ allowed_to_fail = False
 
 
 def build_cython_extensions():
+    import Cython.Compiler.Options  # pyright: ignore [reportMissingImports]
     from Cython.Build import build_ext, cythonize  # pyright: ignore [reportMissingImports]
     from setuptools import Extension
     from setuptools.dist import Distribution
+
+    Cython.Compiler.Options.annotate = True
 
     if os.name == "nt":  # Windows
         extra_compile_args = [
@@ -50,7 +53,7 @@ def build_cython_extensions():
         include_dirs.update(extension.include_dirs)
     include_dirs = list(include_dirs)
 
-    ext_modules = cythonize(extensions, include_path=include_dirs, language_level=3)
+    ext_modules = cythonize(extensions, include_path=include_dirs, language_level=3, annotate=True)
     dist = Distribution({"ext_modules": ext_modules})
     cmd = build_ext(dist)
     cmd.ensure_finalized()
