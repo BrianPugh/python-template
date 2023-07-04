@@ -31,7 +31,7 @@ python = ">=3.8"
 typer = ">=0.7.0"
 
 [tool.poetry.group.docs.dependencies]
-sphinx = "~4.5.0"
+sphinx = "~6.2.1"
 sphinx_rtd_theme = "~1.2.2"
 gitpython = ">=3.1.31"
 sphinx-copybutton = "^0.5.2"
