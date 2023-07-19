@@ -42,7 +42,6 @@ pre_commit = ">=2.16.0"
 pytest = ">=7.1.2"
 pytest-cov = ">=3.0.0"
 pytest-mock = ">=3.7.0"
-black = ">=23.1.0"
 
 [tool.poetry.group.debug]
 optional = true
