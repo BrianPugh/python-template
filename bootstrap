@@ -296,8 +296,8 @@ def main():
 
     run(["poetry", "update"])
     run(["poetry", "install"])
-    run(["pre_commit", "install"])
-    run(["pre_commit", "autoupdate"])
+    run(["pre-commit", "install"])
+    run(["pre-commit", "autoupdate"])
 
     # Delete this script
     bootstrap_file.unlink()
