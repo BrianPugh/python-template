@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import List, Union
 
 POETRY_BIN = shutil.which("poetry")
-PRE_COMMIT_BIN = shutil.which("pre-commit")
 
 
 class BadResponseError(Exception):
@@ -20,24 +19,6 @@ class BadResponseError(Exception):
 def run(cmds, **kwargs):
     """Run bash cmd without capturing stdout."""
     subprocess.run(cmds, capture_output=False, check=True, **kwargs)  # noqa: S603
-
-
-def check_and_install_pipx():
-    if shutil.which("pipx"):
-        return
-    print("pipx not found. Installing...")
-    run([sys.executable, "-m", "pip", "install", "--user", "pipx"])
-    run([sys.executable, "-m", "pipx", "ensurepath"])
-
-
-def check_and_install_pre_commit():
-    global PRE_COMMIT_BIN
-    if PRE_COMMIT_BIN:
-        return
-    print("pre-commit not found. Installing...")
-    check_and_install_pipx()
-    run([sys.executable, "-m", "pipx", "install", "pre-commit"])
-    PRE_COMMIT_BIN = str(Path("~/.local/bin/pre-commit").expanduser())
 
 
 def check_and_install_poetry():
@@ -152,7 +133,6 @@ def git_remote_to_username_repo(git_remote_url):
 
 def main():
     check_and_install_poetry()
-    check_and_install_pre_commit()
 
     replacements: dict[str, str] = {
         "CURRENT_YEAR_HERE": str(date.today().year),
@@ -296,8 +276,8 @@ def main():
 
     run([POETRY_BIN, "update"])
     run([POETRY_BIN, "install"])
-    run([PRE_COMMIT_BIN, "install"])
-    run([PRE_COMMIT_BIN, "autoupdate"])
+    run(["poetry", "run", "python", "-m", "pre_commit", "install"])
+    run(["poetry", "run", "python", "-m", "pre_commit", "autoupdate"])
 
     # Delete this script
     bootstrap_file.unlink()
