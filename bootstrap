@@ -9,6 +9,9 @@ from datetime import date
 from pathlib import Path
 from typing import List, Union
 
+POETRY_BIN = shutil.which("poetry")
+PRE_COMMIT_BIN = shutil.which("pre-commit")
+
 
 class BadResponseError(Exception):
     """User gave a response that does not agree with rule set."""
@@ -28,21 +31,25 @@ def check_and_install_pipx():
 
 
 def check_and_install_pre_commit():
-    if shutil.which("pre-commit"):
+    global PRE_COMMIT_BIN
+    if PRE_COMMIT_BIN:
         return
     print("pre-commit not found. Installing...")
     check_and_install_pipx()
     run([sys.executable, "-m", "pipx", "install", "pre-commit"])
+    PRE_COMMIT_BIN = str(Path("~/.local/bin/pre-commit").expanduser())
 
 
 def check_and_install_poetry():
-    if shutil.which("poetry"):
+    global POETRY_BIN
+    if POETRY_BIN:
         return
     print("poetry not found. Installing...")
     run(
         "curl -sSL https://install.python-poetry.org | python3 -",
         shell=True,  # noqa: S604
     )
+    POETRY_BIN = str(Path("~/.local/bin/poetry").expanduser())
 
 
 def camel_to_snake(s):
@@ -282,15 +289,15 @@ def main():
     # Move README_TEMPLATE.rst
     (repo / "README_TEMPLATE.rst").replace(repo / "README.rst")
 
-    run(["poetry", "config", "virtualenvs.in-project", "true", "--local"])
+    run([POETRY_BIN, "config", "virtualenvs.in-project", "true", "--local"])
 
     if not include_cli:
-        run(["poetry", "remove", "typer"])
+        run([POETRY_BIN, "remove", "typer"])
 
-    run(["poetry", "update"])
-    run(["poetry", "install"])
-    run(["pre-commit", "install"])
-    run(["pre-commit", "autoupdate"])
+    run([POETRY_BIN, "update"])
+    run([POETRY_BIN, "install"])
+    run([PRE_COMMIT_BIN, "install"])
+    run([PRE_COMMIT_BIN, "autoupdate"])
 
     # Delete this script
     bootstrap_file.unlink()
