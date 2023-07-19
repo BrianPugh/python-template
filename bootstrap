@@ -32,7 +32,7 @@ def check_and_install_pre_commit():
         return
     print("pre-commit not found. Installing...")
     check_and_install_pipx()
-    run(["pipx", "install", "pre-commit"])
+    run([sys.executable, "-m", "pipx", "install", "pre-commit"])
 
 
 def check_and_install_poetry():
