@@ -4,6 +4,7 @@ import re
 import readline
 import shutil
 import subprocess  # nosec
+import sys
 from datetime import date
 from pathlib import Path
 from typing import List, Union
@@ -16,6 +17,29 @@ class BadResponseError(Exception):
 def run(cmds, **kwargs):
     """Run bash cmd without capturing stdout."""
     subprocess.run(cmds, capture_output=False, check=True, **kwargs)  # noqa: S603
+
+
+def check_and_install_pipx():
+    pipx_location = shutil.which("pipx")
+
+    if pipx_location:
+        return
+
+    print("pipx not found. Installing...")
+    run([sys.executable, "-m", "pip", "install", "--user", "pipx"])
+    run([sys.executable, "-m", "pipx", "ensurepath"])
+
+
+def check_and_install_pre_commit():
+    pre_commit_location = shutil.which("pre-commit")
+    if pre_commit_location:
+        return
+
+    print("pre-commit not found. Installing...")
+
+    check_and_install_pipx()
+
+    run(["pipx", "install", "pre-commit"])
 
 
 def check_and_install_poetry():
@@ -128,6 +152,7 @@ def git_remote_to_username_repo(git_remote_url):
 
 def main():
     check_and_install_poetry()
+    check_and_install_pre_commit()
 
     replacements: dict[str, str] = {
         "CURRENT_YEAR_HERE": str(date.today().year),
@@ -271,8 +296,8 @@ def main():
 
     run(["poetry", "update"])
     run(["poetry", "install"])
-    run(["poetry", "run", "python", "-m", "pre_commit", "install"])
-    run(["poetry", "run", "python", "-m", "pre_commit", "autoupdate"])
+    run(["pre_commit", "install"])
+    run(["pre_commit", "autoupdate"])
 
     # Delete this script
     bootstrap_file.unlink()
