@@ -25,6 +25,7 @@ def build_cython_extensions():
             "-Werror",
             "-Wno-unreachable-code-fallthrough",
             "-Wno-deprecated-declarations",
+            "-Wno-parentheses-equality",
         ]
     # Relative to project root director
     include_dirs = [
