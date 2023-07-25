@@ -1,7 +1,7 @@
 |Python compat| |GHA tests|
 
 A template to quickly get you creating an open-source python library
-or project with linting, static analysis, CI, and CD to PyPi.
+or project with linting, static analysis, CI, and CD to PyPI.
 
 Usage
 =====
@@ -20,7 +20,7 @@ And follow the on-screen prompts. ``bootstrap`` uses some git data (like detecti
 Compatibility
 =============
 
-This template only works on MacOS/Linux/WSL, it *will not work natively on windows*.
+This template's ``bootstrap`` functionality only works on MacOS/Linux/WSL, it *will not work natively on windows*.
 The resulting project, however, may be windows-compatible.
 
 Features
@@ -32,9 +32,9 @@ Features
 
   * If not installed, Poetry will automatically be installed when running ``bootstrap``.
 
-  * **Poetry Dynamic Versioning_** - Dynamically handles your project version based on git tags.
+  * `Poetry Dynamic Versioning`_ - Dynamically handles your project version based on git tags.
 
-* Optional command line interface boilerplate using ``typer``.
+* Optional command line interface boilerplate using Typer_.
 
 * Optional C binding support via Cython.
 
@@ -42,31 +42,33 @@ Features
 
   * To setup, goto `ReadTheDocs Dashboard`_ and click on "Import a Project".
 
-* `Pre-commit`_ linting and static analysis. The following are pre-configured:
+* `Pre-commit`_ linting and static analysis. The following hooks are pre-configured:
 
-  * `Black <https://github.com/psf/black>`_ - Code formatter and linter.
+  * `Black <https://github.com/psf/black>`_ - The uncompromising Python code formatter.
 
   * `Ruff <https://github.com/charliermarsh/ruff>`_ - An extremely fast Python linter.
 
   * `Creosote <https://github.com/fredrikaverpil/creosote>`_ - Identifies unused dependencies.
 
-  * `Codespell <https://github.com/codespell-project/codespell>`_ - Checks code for common misspellings.
+  * `Codespell <https://github.com/codespell-project/codespell>`_ - Checks code and documentation for common misspellings.
 
   * `Pyright <https://github.com/microsoft/pyright>`_ - Static type checker.
 
 * `Docker`_ support for standalone projects.
 
-* GitHub actions for:
+* GitHub Actions for:
 
-  * Run ``pre-commit`` on pull requests and commits to ``main``.
+  * Running ``pre-commit`` on pull requests and commits to ``main``.
 
-  * Run unit tests, coverage, and verify docs build on pull requests and commits to ``main``.
+  * Running unit tests, coverage, and verify docs build on pull requests and commits to ``main``.
 
     * Goto your `Codecov Dashboard`_ and add your repo.
 
-  * Build and upload wheels to PyPi on semver tags ``vX.Y.Z``.
+  * Build and upload wheels to PyPI on semver tags ``vX.Y.Z``.
 
-    * Add your `PyPi API token`_ to your `GitHub secrets`_ for key ``PYPI_TOKEN``.
+    * Add your `PyPI API token`_ to your `GitHub secrets`_ for key ``PYPI_TOKEN``.
+
+    * If using Cython, pre-built binary packages will be created for all major operating systems, python versions, and computer architectures.
 
   * Build and upload docker images to Dockerhub.
 
@@ -111,7 +113,7 @@ Replace any reference here to ``pythontemplate`` with your project name.
 5. The Github Action workflow defined in ``.github/workflows/build_wheels.yaml`` will create pre-built
    binaries for all major Python versions, operating systems, and computer architectures.
    It will also create a Source Distribution (sdist).
-   Finally, on git semver tags (``vX.X.X``), it will upload all the resulting wheels to pypi.
+   Finally, on git semver tags (``vX.X.X``), it will upload all the resulting wheels to PyPI.
 
 
 Reference
@@ -130,10 +132,11 @@ this template at https://github.com/BrianPugh/python-template .
 .. _GitHub secrets: https://docs.github.com/en/actions/security-guides/encrypted-secrets
 .. _Poetry: https://python-poetry.org
 .. _Pre-commit: https://pre-commit.com
-.. _PyPi API token: https://pypi.org/help/#apitoken
+.. _PyPI API token: https://pypi.org/help/#apitoken
 .. _ReadTheDocs Dashboard: https://readthedocs.org/dashboard/
 .. _ReadTheDocs: https://readthedocs.org
 .. _Sphinx: https://www.sphinx-doc.org/en/master/
 .. _token: https://docs.docker.com/docker-hub/access-tokens/
 .. _Cython: https://cython.readthedocs.io/en/latest/
 .. _Poetry Dynamic Versioning: https://github.com/mtkennerly/poetry-dynamic-versioning
+.. _Typer: https://typer.tiangolo.com
