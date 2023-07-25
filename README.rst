@@ -32,7 +32,7 @@ Features
 
   * If not installed, Poetry will automatically be installed when running ``bootstrap``.
 
-  * **Poetry Dynamic Versioning**_ - Dynamically handles your project version based on git tags.
+  * `Poetry Dynamic Versioning`_ - Dynamically handles your project version based on git tags.
 
 * Optional command line interface boilerplate using Typer_.
 
