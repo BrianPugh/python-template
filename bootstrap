@@ -12,6 +12,18 @@ from typing import List, Union
 POETRY_BIN = shutil.which("poetry")
 
 
+class col:  # noqa: N801
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
+
 class BadResponseError(Exception):
     """User gave a response that does not agree with rule set."""
 
@@ -23,14 +35,22 @@ def run(cmds, **kwargs):
 
 def check_and_install_poetry():
     global POETRY_BIN
-    if POETRY_BIN:
-        return
-    print("poetry not found. Installing...")
-    run(
-        "curl -sSL https://install.python-poetry.org | python3 -",
-        shell=True,  # noqa: S604
-    )
-    POETRY_BIN = str(Path("~/.local/bin/poetry").expanduser())
+    if not POETRY_BIN:
+        print("poetry not found. Installing...")
+        run(
+            "curl -sSL https://install.python-poetry.org | python3 -",
+            shell=True,  # noqa: S604
+        )
+        POETRY_BIN = str(Path("~/.local/bin/poetry").expanduser())
+
+    # Check if the poetry installation is potentially broken; see issue #46
+    try:
+        subprocess.check_output(["poetry", "--version"])  # noqa: S603, S607
+    except subprocess.CalledProcessError:
+        print(
+            f"{col.FAIL}\n\nPoetry installation failed healthcheck. Manual debugging required. It is unlikely that python-template's bootstrapping is at fault.\n{col.ENDC}"
+        )
+        sys.exit(1)
 
 
 def camel_to_snake(s):
@@ -288,10 +308,10 @@ def main():
     git("add", "-A")
     git("commit", "-m", "bootstrap from template", "--no-verify")
 
-    print()
+    print(col.OKGREEN)
     print("Bootstrapping complete. Changes committed. Please run:")
     print("    git push")
-    print()
+    print(col.ENDC)
 
 
 if __name__ == "__main__":
