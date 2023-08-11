@@ -65,9 +65,10 @@ repos:
 
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.5
+    additional_dependencies:
+      - tomli
     hooks:
       - id: codespell
-        exclude: ^(poetry.lock)
 
   - repo: https://github.com/RobertCraigie/pyright-python
     rev: v1.1.318
