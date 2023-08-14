@@ -52,6 +52,9 @@ def check_and_install_poetry():
         )
         sys.exit(1)
 
+    # Add necessary plugins
+    run(["poetry", "self", "add", "poetry-dynamic-versioning[plugin]"])
+
 
 def camel_to_snake(s):
     return "".join(["_" + c.lower() if c.isupper() else c for c in s]).lstrip("_")
