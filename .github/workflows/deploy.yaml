@@ -1,5 +1,7 @@
 name: Build package and push to PyPi
+
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*.*.*"
@@ -10,8 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build and publish to pypi
-        uses: JRubics/poetry-publish@v1.17
+        uses: JRubics/poetry-publish@v1.16
         with:
           pypi_token: ${{ secrets.PYPI_TOKEN }}
           ignore_dev_requirements: "yes"
           plugins: "poetry-dynamic-versioning"
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: dist
+          path: dist/
