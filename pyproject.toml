@@ -1,5 +1,5 @@
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5"]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1"]
 build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry-dynamic-versioning]
@@ -27,7 +27,7 @@ pythontemplate = "pythontemplate.cli.main:run_app"
 
 [tool.poetry.dependencies]
 # Be as loose as possible if writing a library.
-python = ">=3.8"
+python = "^3.8"
 typer = ">=0.7.0"
 
 [tool.poetry.group.docs.dependencies]
