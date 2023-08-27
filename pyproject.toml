@@ -28,7 +28,8 @@ pythontemplate = "pythontemplate.cli.main:run_app"
 [tool.poetry.dependencies]
 # Be as loose as possible if writing a library.
 python = "^3.8"
-typer = ">=0.7.0"
+typer = ">=0.9.0"
+typing-extensions = "^4.7.1"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "~6.2.1"

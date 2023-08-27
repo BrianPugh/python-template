@@ -1,5 +1,6 @@
 import typer
 from typer import Option
+from typing_extensions import Annotated
 
 import pythontemplate
 
@@ -18,16 +19,18 @@ def version_callback(value: bool):
 @app.callback()
 def common(
     ctx: typer.Context,
-    version: bool = Option(
-        None,
-        "--version",
-        "-v",
-        callback=version_callback,
-        help="Print pythontemplate version.",
-    ),
+    version: Annotated[
+        bool,
+        Option(
+            "--version",
+            "-v",
+            callback=version_callback,
+            help="Print gnwmanager version.",
+        ),
+    ] = False,
 ):
     pass
 
 
-def run_app(*args, **kwargs):
-    app(*args, **kwargs)
+def run_app():
+    app(prog_name="pythontemplate")
