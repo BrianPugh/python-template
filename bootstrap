@@ -299,6 +299,7 @@ def main():
 
     if not include_cli:
         run([POETRY_BIN, "remove", "typer"])
+        run([POETRY_BIN, "remove", "rich"])
 
     run([POETRY_BIN, "update"])
     run([POETRY_BIN, "install"])
