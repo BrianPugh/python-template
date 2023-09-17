@@ -234,12 +234,12 @@ def main():
 
         with Path("pyproject.toml").open("w") as f:
             for line in pyproject_contents:
-                if line == 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5"]\n':
-                    line = 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=0.21.5", "Cython", "setuptools>=61.0"]\n'
+                if line == 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1"]\n':
+                    line = 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1", "Cython>=3.0.0", "setuptools>=61.0"]\n'
                 f.write(line)
 
                 if line == "[tool.poetry.group.dev.dependencies]\n":
-                    f.write('cython = ">=0.29.34"\n')
+                    f.write('cython = ">=1.0.0"\n')
 
                 if line == "[tool.poetry.build]\n":
                     f.write("script = 'build.py'\n")

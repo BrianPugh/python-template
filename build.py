@@ -28,7 +28,9 @@ def build_cython_extensions():
             "-Wno-unreachable-code-fallthrough",
             "-Wno-deprecated-declarations",
             "-Wno-parentheses-equality",
+            "-Wno-unreachable-code",  # TODO: This should no longer be necessary with Cython>=3.0.3
         ]
+    extra_compile_args.append("-UNDEBUG")  # Cython disables asserts by default.
     # Relative to project root director
     include_dirs = [
         "pythontemplate/",
