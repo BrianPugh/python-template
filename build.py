@@ -29,6 +29,7 @@ def build_cython_extensions():
             "-Wno-deprecated-declarations",
             "-Wno-parentheses-equality",
         ]
+    extra_compile_args.append("-UNDEBUG")  # Cython disables asserts by default.
     # Relative to project root director
     include_dirs = [
         "pythontemplate/",
