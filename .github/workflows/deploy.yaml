@@ -21,10 +21,10 @@ jobs:
           path: ~/.local
           key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
 
-      - name: Set up python 3.11
+      - name: Set up python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install poetry
         uses: snok/install-poetry@v1
