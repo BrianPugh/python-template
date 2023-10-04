@@ -42,7 +42,7 @@ jobs:
           echo 'ACTIVATE_PYTHON_VENV=.venv/bin/activate' >> $GITHUB_ENV
 
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cache $HOME/.local # Significantly speeds up Poetry Install
         uses: actions/cache@v3
