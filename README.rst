@@ -75,6 +75,9 @@ Features
     * Add your Dockerhub username and `token`_ to your `GitHub secrets`_
       ``DOCKERHUB_USERNAME`` and ``DOCKERHUB_TOKEN``.
 
+    * Optionally, modify the ``tags`` field in ``.github/workflows/docker.yaml``.
+      By default, it assumes your docker username is the same as your github username.
+
 
 Cython
 ======
