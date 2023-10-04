@@ -11,6 +11,7 @@ jobs:
     env:
       HAVE_DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN != '' }}
     steps:
+      - uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -25,5 +26,7 @@ jobs:
         if: ${{ env.HAVE_DOCKERHUB_TOKEN == 'true' }}
         uses: docker/build-push-action@v5
         with:
+          context: .
+          file: Dockerfile
           push: true
-          tags: user/app:latest
+          tags: GIT_USERNAME/GIT_REPONAME:latest
