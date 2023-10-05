@@ -169,3 +169,12 @@ staticmethod-decorators = [
 
 [tool.codespell]
 skip = 'poetry.lock,'
+
+[tool.creosote]
+venvs=[".venv"]
+paths=["pythontemplate"]
+deps-file="pyproject.toml"
+sections=["tool.poetry.dependencies"]
+exclude-deps =[
+  "rich",
+]
