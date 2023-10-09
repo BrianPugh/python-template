@@ -28,7 +28,7 @@ repos:
           - "--line-length=120"
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -66,6 +66,6 @@ repos:
       - id: codespell
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.329
+    rev: v1.1.330.post0
     hooks:
       - id: pyright

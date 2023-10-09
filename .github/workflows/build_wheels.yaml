@@ -20,10 +20,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up python 3.11
+      - name: Set up python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -44,7 +44,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest]
-        cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["AMD64", "x86", "ARM64"]
         exclude:
           - os: windows-latest
@@ -62,10 +62,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up python 3.11
+      - name: Set up python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -75,7 +75,7 @@ jobs:
           installer-parallel: false # Currently there seems to be some race-condition in windows
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.3
+        uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
@@ -94,7 +94,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["x86_64", "i686", "aarch64", "ppc64le"]
 
     steps:
@@ -109,10 +109,10 @@ jobs:
         with:
           platforms: all
 
-      - name: Set up python 3.11
+      - name: Set up python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -121,7 +121,7 @@ jobs:
           virtualenvs-in-project: false
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.3
+        uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
@@ -139,7 +139,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest]
-        cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["x86_64"]
     env:
       SYSTEM_VERSION_COMPAT: 0 # https://github.com/actions/setup-python/issues/469#issuecomment-1192522949
@@ -149,10 +149,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up python 3.11
+      - name: Set up python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -161,7 +161,7 @@ jobs:
           virtualenvs-in-project: false
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.3
+        uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
@@ -178,7 +178,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*"]
+        cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["arm64"]
 
     steps:
@@ -189,10 +189,10 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.3
+        uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_BUILD: ${{ matrix.cibw_build }}
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
