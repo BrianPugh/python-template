@@ -4,7 +4,12 @@ from typing_extensions import Annotated
 
 import pythontemplate
 
-app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False, add_completion=False)
+app = typer.Typer(
+    no_args_is_help=True,
+    pretty_exceptions_enable=False,
+    add_completion=False,
+    context_settings={"help_option_names": ["-h", "--help"]},
+)
 # Add functions from other files like:
 # app.command()(my_subcommand)
 
