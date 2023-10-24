@@ -55,6 +55,7 @@ jobs:
         run: poetry build
 
       - name: Publish package
+        if: github.event_name != 'workflow_dispatch'
         run: |
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
           poetry publish
