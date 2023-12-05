@@ -34,7 +34,7 @@ Features
 
   * `Poetry Dynamic Versioning`_ - Dynamically handles your project version based on git tags.
 
-* Optional command line interface boilerplate using Typer_.
+* Optional command line interface boilerplate using Cyclopts_.
 
 * Optional C binding support via Cython.
 
@@ -142,4 +142,4 @@ this template at https://github.com/BrianPugh/python-template .
 .. _token: https://docs.docker.com/docker-hub/access-tokens/
 .. _Cython: https://cython.readthedocs.io/en/latest/
 .. _Poetry Dynamic Versioning: https://github.com/mtkennerly/poetry-dynamic-versioning
-.. _Typer: https://typer.tiangolo.com
+.. _Cyclopts: https://github.com/BrianPugh/cyclopts

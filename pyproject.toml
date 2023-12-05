@@ -28,9 +28,9 @@ pythontemplate = "pythontemplate.cli.main:run_app"
 [tool.poetry.dependencies]
 # Be as loose as possible if writing a library.
 python = "^3.8"
-typer = ">=0.9.0"
 typing-extensions = "^4.8.0"
 rich = ">=10.11.0"
+cyclopts = "^1.0.0"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "~7.1.2"
@@ -177,4 +177,5 @@ deps-file="pyproject.toml"
 sections=["tool.poetry.dependencies"]
 exclude-deps =[
   "rich",
+  "typing-extensions",
 ]
