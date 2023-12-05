@@ -191,7 +191,7 @@ def main():
     is_typed = is_typed in yes_terms
 
     include_cli = validate_input(
-        "Would you like to include a CLI using Typer? [default: yes]",
+        "Would you like to include a CLI using Cyclopts? [default: yes]",
         is_boolean,
         default="yes",
     )
@@ -298,7 +298,7 @@ def main():
     run([POETRY_BIN, "config", "virtualenvs.in-project", "true", "--local"])
 
     if not include_cli:
-        run([POETRY_BIN, "remove", "typer"])
+        run([POETRY_BIN, "remove", "cyclopts"])
         run([POETRY_BIN, "remove", "rich"])
 
     run([POETRY_BIN, "update"])
