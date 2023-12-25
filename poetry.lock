@@ -288,20 +288,21 @@ toml = ["tomli"]
 
 [[package]]
 name = "cyclopts"
-version = "1.1.0"
+version = "1.2.0"
 description = ""
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cyclopts-1.1.0-py3-none-any.whl", hash = "sha256:e50befae990abbd5fa9eb448ddcf72ea31cfe576fd3cdb6e0c60a44910dde685"},
-    {file = "cyclopts-1.1.0.tar.gz", hash = "sha256:b1cf881c6c60e18479ec9907776082701aaf74bf7e4c8fc2ffa9e08c9f59f7d7"},
+    {file = "cyclopts-1.2.0-py3-none-any.whl", hash = "sha256:35f34756b4b71336c8db137fce42c33f42cf9cbfc8b137bcf059422430ab11e9"},
+    {file = "cyclopts-1.2.0.tar.gz", hash = "sha256:64133f745ad1082a143190e9bc21e5a51887fc87bbd555d5b941c0a4ddaea1e4"},
 ]
 
 [package.dependencies]
 attrs = ">=23.1.0"
 docstring-parser = ">=0.15,<0.16"
+importlib-metadata = {version = ">=4.4", markers = "python_version < \"3.10\""}
 rich = ">=13.6.0"
-typing-extensions = ">=4.8.0"
+typing-extensions = {version = ">=4.8.0", markers = "python_full_version >= \"3.8.0\" and python_full_version < \"4.0.0\""}
 
 [[package]]
 name = "decorator"
@@ -1448,4 +1449,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "2cf1b82a0506215f87f478847640cc7f0462501f4fed20bae7beab14689cdfe8"
+content-hash = "e25bcbdd5a439411d605e82d21c89091048fe5c748dc603665ddbaadb61772c7"
