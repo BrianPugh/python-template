@@ -288,13 +288,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "cyclopts"
-version = "2.1.2"
+version = "2.2.0"
 description = ""
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cyclopts-2.1.2-py3-none-any.whl", hash = "sha256:21833d9cb29e9fc4dccf2a5da207a7c7d2c671b70dad56427a679512b476a490"},
-    {file = "cyclopts-2.1.2.tar.gz", hash = "sha256:8f193c8815f221b78cb74fafa5f74b404f8527d220c5c148060c1927ba4b1e02"},
+    {file = "cyclopts-2.2.0-py3-none-any.whl", hash = "sha256:48a274f5e2de009e5b019279a8a630d64000f0683ad3e6baffe4f7908dac8980"},
+    {file = "cyclopts-2.2.0.tar.gz", hash = "sha256:1c942e96fd0b238d8c2e17104ab78051cc750d401341c0272df1050d15f37a59"},
 ]
 
 [package.dependencies]
@@ -302,6 +302,7 @@ attrs = ">=23.1.0"
 docstring-parser = ">=0.15,<0.16"
 importlib-metadata = {version = ">=4.4", markers = "python_version < \"3.10\""}
 rich = ">=13.6.0"
+rich-rst = ">=1.2.0,<2.0.0"
 typing-extensions = {version = ">=4.8.0", markers = "python_full_version >= \"3.8.0\" and python_full_version < \"4.0.0\""}
 
 [[package]]
@@ -1106,6 +1107,21 @@ typing-extensions = {version = ">=4.0.0,<5.0", markers = "python_version < \"3.9
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
+name = "rich-rst"
+version = "1.2.0"
+description = "A beautiful reStructuredText renderer for rich"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "rich-rst-1.2.0.tar.gz", hash = "sha256:12e3962fd2ed99f5361beab8abb35b87b1d2a8d3a14cb705bc70d2eb2fa81ddd"},
+    {file = "rich_rst-1.2.0-py3-none-any.whl", hash = "sha256:49903d68fc7019d672145397719970c23ebcd7617c664bc26004607e83e4db6d"},
+]
+
+[package.dependencies]
+docutils = "*"
+rich = ">=12.0.0"
+
+[[package]]
 name = "setuptools"
 version = "69.0.2"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
@@ -1450,4 +1466,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "85bfca17a1b6735fc9292da3a304395718ed7f22c7ce6432bffa5b79c39a17aa"
+content-hash = "9f0516252fc138989dc5fcc78e9f045918eb5bbfd243d65689ee0c487ef48779"
