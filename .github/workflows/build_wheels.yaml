@@ -1,6 +1,7 @@
 name: Build Wheels
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     tags:
@@ -16,12 +17,12 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -33,8 +34,9 @@ jobs:
           poetry self add "poetry-dynamic-versioning[plugin]"
           poetry build --format=sdist
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: wheels-sdist
           path: dist/*.tar.gz
 
   build_wheels_windows:
@@ -57,13 +59,18 @@ jobs:
         run: |
           (Get-ItemProperty "HKLM:System\CurrentControlSet\Control\FileSystem").LongPathsEnabled
 
+      - name: Sanitize matrix.cibw_build
+        id: sanitize_build
+        run: echo "CIBW_BUILD_SANITIZED=$(echo '${{ matrix.cibw_build }}' | sed 's/\*/_/g')" >> $GITHUB_ENV
+        shell: bash
+
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -75,7 +82,7 @@ jobs:
           installer-parallel: false # Currently there seems to be some race-condition in windows
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.16.5
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
@@ -83,8 +90,9 @@ jobs:
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest {package}/tests
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: wheels-${{ matrix.os }}-${{ env.CIBW_BUILD_SANITIZED }}-${{ matrix.cibw_archs }}
           path: wheelhouse/*.whl
 
   build_wheels_linux:
@@ -99,18 +107,23 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Sanitize matrix.cibw_build
+        id: sanitize_build
+        run: echo "CIBW_BUILD_SANITIZED=$(echo '${{ matrix.cibw_build }}' | sed 's/\*/_/g')" >> $GITHUB_ENV
+        shell: bash
+
       - name: Set up QEMU
         if: matrix.cibw_archs != 'x86_64'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: all
 
       - name: Set up python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -121,15 +134,16 @@ jobs:
           virtualenvs-in-project: false
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.16.5
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest {package}/tests
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: wheels-${{ matrix.os }}-${{ env.CIBW_BUILD_SANITIZED }}-${{ matrix.cibw_archs }}
           path: wheelhouse/*.whl
 
   build_wheels_macos:
@@ -145,12 +159,17 @@ jobs:
       SYSTEM_VERSION_COMPAT: 0 # https://github.com/actions/setup-python/issues/469#issuecomment-1192522949
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Sanitize matrix.cibw_build
+        id: sanitize_build
+        run: echo "CIBW_BUILD_SANITIZED=$(echo '${{ matrix.cibw_build }}' | sed 's/\*/_/g')" >> $GITHUB_ENV
+        shell: bash
+
       - name: Set up python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -161,15 +180,16 @@ jobs:
           virtualenvs-in-project: false
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.16.5
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest {package}/tests
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: wheels-${{ matrix.os }}-${{ env.CIBW_BUILD_SANITIZED }}-${{ matrix.cibw_archs }}
           path: wheelhouse/*.whl
 
   build_wheels_macos_arm64:
@@ -183,16 +203,16 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.16.5
         env:
           CIBW_BUILD: ${{ matrix.cibw_build }}
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
@@ -222,8 +242,9 @@ jobs:
 
             echo "DONE."
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: wheels-${{ matrix.os }}-${{ matrix.cibw_build }}-${{ matrix.cibw_archs }}
           path: ./wheelhouse/*.whl
 
   upload_to_pypi:
@@ -238,9 +259,14 @@ jobs:
       ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
+        with:
+          path: wheels
+          pattern: wheels-*
+          merge-multiple: true
+
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_TOKEN }}
-          packages_dir: artifact/
+          packages_dir: wheels/
           skip_existing: true
