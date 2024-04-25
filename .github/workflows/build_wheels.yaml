@@ -152,7 +152,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest]
+        os: [macos-13]
         cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["x86_64"]
     env:
@@ -197,7 +197,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [macos-13]
         cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["arm64"]
 
