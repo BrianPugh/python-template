@@ -33,7 +33,7 @@ Usage
 
 
 
-.. |GHA tests| image:: https://github.com/GIT_USERNAME/GIT_REPONAME/workflows/tests/badge.svg
+.. |GHA tests| image:: https://github.com/GIT_USERNAME/GIT_REPONAME/actions/workflows/tests.yaml/badge.svg?branch=main
    :target: https://github.com/GIT_USERNAME/GIT_REPONAME/actions?query=workflow%3Atests
    :alt: GHA Status
 .. |Codecov report| image:: https://codecov.io/github/GIT_USERNAME/GIT_REPONAME/coverage.svg?branch=main
