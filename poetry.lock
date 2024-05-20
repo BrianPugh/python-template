@@ -288,13 +288,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "cyclopts"
-version = "2.6.1"
+version = "2.6.2"
 description = ""
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "cyclopts-2.6.1-py3-none-any.whl", hash = "sha256:12cf686c0b99b31160dfbfab3a441f77d01d83858188806b11e1f8bbf19b2312"},
-    {file = "cyclopts-2.6.1.tar.gz", hash = "sha256:4acce6e650d21af464181f0242c2eda6478b46589522218b97cb45d84414c7aa"},
+    {file = "cyclopts-2.6.2-py3-none-any.whl", hash = "sha256:4b8d29ff23b0a7476b2b018677241408b55e6ac69e7393895e13bc317e3ec250"},
+    {file = "cyclopts-2.6.2.tar.gz", hash = "sha256:d0800499299e1842bf246b178abb8f6e9b07208cf1ddd4f4bca0c0ac9d4c2c1e"},
 ]
 
 [package.dependencies]
@@ -302,7 +302,7 @@ attrs = ">=23.1.0"
 docstring-parser = ">=0.15,<0.16"
 importlib-metadata = {version = ">=4.4", markers = "python_version < \"3.10\""}
 rich = ">=13.6.0"
-rich-rst = ">=1.2.0,<2.0.0"
+rich-rst = ">=1.3.1,<2.0.0"
 typing-extensions = {version = ">=4.8.0", markers = "python_full_version >= \"3.8.0\" and python_full_version < \"4.0.0\""}
 
 [[package]]
@@ -1109,13 +1109,13 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "rich-rst"
-version = "1.2.0"
+version = "1.3.1"
 description = "A beautiful reStructuredText renderer for rich"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "rich-rst-1.2.0.tar.gz", hash = "sha256:12e3962fd2ed99f5361beab8abb35b87b1d2a8d3a14cb705bc70d2eb2fa81ddd"},
-    {file = "rich_rst-1.2.0-py3-none-any.whl", hash = "sha256:49903d68fc7019d672145397719970c23ebcd7617c664bc26004607e83e4db6d"},
+    {file = "rich_rst-1.3.1-py3-none-any.whl", hash = "sha256:498a74e3896507ab04492d326e794c3ef76e7cda078703aa592d1853d91098c1"},
+    {file = "rich_rst-1.3.1.tar.gz", hash = "sha256:fad46e3ba42785ea8c1785e2ceaa56e0ffa32dbe5410dec432f37e4107c4f383"},
 ]
 
 [package.dependencies]
@@ -1467,4 +1467,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "3382d322bd9b0e6451fbe5a4b72826cb571bf4fcee42b0b869d9f7ecc6b78c4e"
+content-hash = "e36f4e82947c5d7d058a21889e2c4ec0a8eece50293bccc86f7afdb59d5479e9"
