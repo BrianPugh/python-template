@@ -17,6 +17,12 @@ Then run:
 
 And follow the on-screen prompts. ``bootstrap`` uses some git data (like detecting your username and repository name), so cloning the repo generated from the template is necessary.
 
+General sanity checks and best practices are performed on provided responses. To disable these, run with the ``--no-verify`` flag:
+
+.. code-block:: bash
+
+   ./bootstrap --no-verify
+
 Compatibility
 =============
 
