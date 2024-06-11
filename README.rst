@@ -44,9 +44,7 @@ Features
 
 * `Pre-commit`_ linting and static analysis. The following hooks are pre-configured:
 
-  * `Black <https://github.com/psf/black>`_ - The uncompromising Python code formatter.
-
-  * `Ruff <https://github.com/charliermarsh/ruff>`_ - An extremely fast Python linter.
+  * `Ruff <https://github.com/astral-sh/ruff>`_ - An extremely fast Python linter and formatter.
 
   * `Creosote <https://github.com/fredrikaverpil/creosote>`_ - Identifies unused dependencies.
 
