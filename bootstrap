@@ -5,9 +5,14 @@ import readline
 import shutil
 import subprocess  # nosec
 import sys
+from argparse import ArgumentParser
 from datetime import date
 from pathlib import Path
 from typing import List, Union
+
+parser = ArgumentParser(description="Prepares python project repository.")
+parser.add_argument("--no-verify", action="store_true", help="Disable input verification.")
+cli_args = parser.parse_args()
 
 POETRY_BIN = shutil.which("poetry")
 
@@ -68,7 +73,7 @@ def validate_input(prompt, validate=None, default=""):
         if not response:
             response = default
 
-        if validate is None:
+        if validate is None or cli_args.no_verify:
             break
 
         try:
