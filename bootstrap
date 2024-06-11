@@ -267,7 +267,7 @@ def main():
             return replacements[match.group(0)]
 
         # notice that the 'this' in 'thistle' is not matched
-        return re.sub("|".join(r"\b%s\b" % re.escape(s) for s in replacements), _replace, string)
+        return re.sub("|".join(rf"\b{re.escape(s)}\b" for s in replacements), _replace, string)
 
     repo = Path(__file__).parent
     bootstrap_file = repo / "bootstrap"

@@ -97,7 +97,10 @@ exclude = [
     ".venv",
 ]
 
-line-length = 120  # Must agree with Black
+line-length = 120
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.ruff.lint]
 select = [
@@ -107,7 +110,6 @@ select = [
     "E",  # Error
     "F",  # pyflakes
     "I",  # isort
-    "ISC", # flake8-implicit-str-concat
     "N",  # pep8-naming
     "PGH",  # pygrep-hooks
     "PTH", # flake8-use-pathlib
