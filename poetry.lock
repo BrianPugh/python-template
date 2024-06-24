@@ -288,13 +288,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "cyclopts"
-version = "2.7.0"
+version = "2.7.1"
 description = ""
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "cyclopts-2.7.0-py3-none-any.whl", hash = "sha256:20a238c5f0cc8b39c84bb267221196af55e01f20a4b04f53c120a64343c09cf9"},
-    {file = "cyclopts-2.7.0.tar.gz", hash = "sha256:fbf466df33b099d1a2f20d09a106b67b7badde980610c442038017fb98f1bd37"},
+    {file = "cyclopts-2.7.1-py3-none-any.whl", hash = "sha256:27151efb7193b13869055b1939d1f77b21c035945cc212c769efa54b2a6d84ea"},
+    {file = "cyclopts-2.7.1.tar.gz", hash = "sha256:4d22a6be9c435afb4a335eee190eaa70993dc68bf4559f8b21189c8feb74a9ec"},
 ]
 
 [package.dependencies]
@@ -1453,4 +1453,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "d74b88041ff6c81ebc8872a44f14d6637bf6e49505c8cf84273baf03bb3cad82"
+content-hash = "be010d4dbf48199f13075a99da8cf09f185ffc1074f07ac5433e609aa9c0c3c0"
