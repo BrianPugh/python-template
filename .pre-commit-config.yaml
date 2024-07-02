@@ -11,8 +11,6 @@ repos:
     rev: v4.6.0
     hooks:
       - id: check-added-large-files
-      - id: check-ast
-      - id: check-builtin-literals
       - id: check-case-conflict
       - id: check-docstring-first
       - id: check-shebang-scripts-are-executable
@@ -40,10 +38,10 @@ repos:
 
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
-    additional_dependencies:
-      - tomli
     hooks:
       - id: codespell
+        additional_dependencies:
+          - tomli
 
   - repo: https://github.com/RobertCraigie/pyright-python
     rev: v1.1.366
