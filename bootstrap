@@ -16,6 +16,7 @@ parser.add_argument("--no-verify", action="store_true", help="Disable input veri
 cli_args = parser.parse_args()
 
 POETRY_BIN = shutil.which("poetry")
+REPO = Path(__file__).parent
 
 
 class col:  # noqa: N801
@@ -177,6 +178,25 @@ def git_remote_to_username_repo(git_remote_url):
     return username_repo.split("/", 1)
 
 
+def add_to_pyproject(after, new_line, replace=False):
+    if not new_line.endswith("\n"):
+        new_line += "\n"
+
+    if not after.endswith("\n"):
+        after += "\n"
+
+    with Path("pyproject.toml").open() as f:
+        pyproject_contents = f.readlines()
+
+    with Path("pyproject.toml").open("w") as f:
+        for line in pyproject_contents:
+            if line == after:
+                if not replace:
+                    f.write(line)
+                line = new_line
+            f.write(line)
+
+
 def main():
     check_and_install_poetry()
 
@@ -261,21 +281,19 @@ def main():
         # Forgo nice simple poetry action for CIBuildWheel.
         Path(".github/workflows/deploy.yaml").unlink()
 
-        # Add Cython-related configurations to pyproject.toml
-        with Path("pyproject.toml").open() as f:
-            pyproject_contents = f.readlines()
-
-        with Path("pyproject.toml").open("w") as f:
-            for line in pyproject_contents:
-                if line == 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1"]\n':
-                    line = 'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1", "Cython>=3.0.0", "setuptools>=61.0"]\n'
-                f.write(line)
-
-                if line == "[tool.poetry.group.dev.dependencies]\n":
-                    f.write('cython = ">=1.0.0"\n')
-
-                if line == "[tool.poetry.build]\n":
-                    f.write("script = 'build.py'\n")
+        add_to_pyproject(
+            'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1"]',
+            'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1", "Cython>=3.0.0", "setuptools>=61.0"]',
+            replace=True,
+        )
+        add_to_pyproject(
+            "[tool.poetry.group.dev.dependencies]",
+            'cython = ">=1.0.0"',
+        )
+        add_to_pyproject(
+            "[tool.poetry.build]",
+            "script = 'build.py'",
+        )
     else:
         # Delete cython-related files
         paths_to_delete: List[Union[str, Path]] = [
@@ -295,6 +313,21 @@ def main():
             else:
                 shutil.rmtree(str(path_to_delete))
 
+    (REPO / "README.rst").unlink()  # Delete python-template's README
+    if doc_format == DocFormat.MARKDOWN:
+        (REPO / "README_TEMPLATE.md").replace(REPO / "README.md")
+        (REPO / "README_TEMPLATE.rst").unlink()
+        add_to_pyproject(
+            "[tool.poetry.group.docs.dependencies]",
+            'myst-parser = {extras = ["linkify"], version = "^3.0.1"}',
+        )
+        replacements[":start-after: inclusion-marker-do-not-remove"] = ":parser: myst_parser.sphinx_"
+    elif doc_format == DocFormat.RESTRUCTURED_TEXT:
+        (REPO / "README_TEMPLATE.rst").replace(REPO / "README.rst")
+        (REPO / "README_TEMPLATE.md").unlink()
+    else:
+        raise NotImplementedError
+
     def replace(string):
         """Replace whole words only."""
 
@@ -302,16 +335,15 @@ def main():
             return replacements[match.group(0)]
 
         # notice that the 'this' in 'thistle' is not matched
-        return re.sub("|".join(rf"\b{re.escape(s)}\b" for s in replacements), _replace, string)
+        pattern = "|".join(rf"\b{re.escape(s)}\b" if " " not in s else re.escape(s) for s in replacements)
+        return re.sub(pattern, _replace, string)
 
-    repo = Path(__file__).parent
-    bootstrap_file = repo / "bootstrap"
-    files: list[Path] = list(repo.rglob("*.py"))
-    files.extend(repo.rglob("*.pyx"))
-    files.extend(repo.rglob("*.pxd"))
-    files.extend(repo.rglob("*.yaml"))
-    files.extend(repo.rglob("*.rst"))
-    files.extend(repo.rglob("*.md"))
+    files: list[Path] = list(REPO.rglob("*.py"))
+    files.extend(REPO.rglob("*.pyx"))
+    files.extend(REPO.rglob("*.pxd"))
+    files.extend(REPO.rglob("*.yaml"))
+    files.extend(REPO.rglob("*.rst"))
+    files.extend(REPO.rglob("*.md"))
     files.append(Path("pyproject.toml"))
     files.append(Path(".gitignore"))
 
@@ -326,17 +358,7 @@ def main():
             file.replace(dst)
 
     # Move the app folder
-    (repo / "pythontemplate").replace(repo / replacements["pythontemplate"])
-
-    # Move README_TEMPLATE
-    if doc_format == DocFormat.MARKDOWN:
-        (repo / "README_TEMPLATE.rst").replace(repo / "README.rst")
-        (repo / "README_TEMPLATE.md").unlink()
-    elif doc_format == DocFormat.RESTRUCTURED_TEXT:
-        (repo / "README_TEMPLATE.md").replace(repo / "README.md")
-        (repo / "README_TEMPLATE.rst").unlink()
-    else:
-        raise NotImplementedError
+    (REPO / "pythontemplate").replace(REPO / replacements["pythontemplate"])
 
     run([POETRY_BIN, "config", "virtualenvs.in-project", "true", "--local"])
 
@@ -350,7 +372,7 @@ def main():
     run(["poetry", "run", "python", "-m", "pre_commit", "autoupdate"])
 
     # Delete this script
-    bootstrap_file.unlink()
+    Path(__file__).unlink()
 
     git("add", "-A")
     git("commit", "-m", "bootstrap from template", "--no-verify")

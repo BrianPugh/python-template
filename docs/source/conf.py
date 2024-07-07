@@ -8,6 +8,7 @@
 import importlib
 import inspect
 import sys
+from contextlib import suppress
 from datetime import date
 from pathlib import Path
 
@@ -45,6 +46,10 @@ extensions = [
     "sphinx.ext.linkcode",
     "sphinx_copybutton",
 ]
+with suppress(ImportError):
+    import myst_parser  # pyright: ignore[reportMissingImports]
+
+    extensions.insert(0, "myst_parser")
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
