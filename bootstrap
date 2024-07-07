@@ -83,6 +83,7 @@ def validate_input(prompt, validate=None, default=""):
             break
         except BadResponseError as e:
             print(f'"{response}" {e}')
+            print('To disable these validation checks, run "./bootstrap --no-verify"')
     return response
 
 
@@ -224,6 +225,7 @@ def main():
     if not is_typed:
         # Remove the py.typed file
         Path("pythontemplate/py.typed").unlink()
+        Path("pythontemplate/_c_extension.pyi").unlink()
 
     if not include_cli:
         # Delete CLI-replated files & config
@@ -256,9 +258,11 @@ def main():
             ".github/workflows/build_wheels.yaml",
             "build.py",
             "pythontemplate/_c_src",
+            "pythontemplate/_c_extension.pyx",
+            "pythontemplate/cpythontemplate.pxd",
+            # Do not include "pythontemplate/_c_extension.pyi" here,
+            # it is removed in the ``is_typed`` section above.
         ]
-        paths_to_delete.extend(Path("pythontemplate").rglob("*.pyx"))
-        paths_to_delete.extend(Path("pythontemplate").rglob("*.pxd"))
 
         for path_to_delete in paths_to_delete:
             path_to_delete = Path(path_to_delete)

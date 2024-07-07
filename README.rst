@@ -87,7 +87,7 @@ Cython
 ======
 This template has an option to add boilerplate for Cython_.
 Cython is a programming language that simplifies the creation of C extensions for Python.
-The Cython documentation is quite good; the aim of this section is to explain what this
+The `Cython documentation is quite good <https://cython.readthedocs.io/en/latest/src/userguide/language_basics.html>`_; the aim of this section is to explain what this
 template sets up, and what actions will still need to be performed by you.
 This explanation assumes you are familiar with C.
 Replace any reference here to ``pythontemplate`` with your project name.
@@ -97,14 +97,16 @@ Replace any reference here to ``pythontemplate`` with your project name.
 
 2. Update ``pythontemplate/cpythontemplate.pxd`` with header information from the files in (1).
    Example of common definitions (functions, structs, and enums) are provided.
-   Think of ``*.pxd`` as a header file that allows Cython ``.pyx`` code to access pure C files.
-   This file will be compiled into a package that can be imported in a ``.pyx`` file via ``cimport``.
-   If you don't plan on using any explicit C files, you may delete this file.
+   Think of ``*.pxd`` as a header file that allows Cython ``.pyx`` code to access pure C ``.c`` files.
+   This file will be compiled into a package of the same name that can be imported in a ``.pyx`` file via ``cimport``.
+   If you don't plan on using any explicit C files, you may delete this file and the ``_c_src`` directory.
 
 3. Add Cython code to ``pythontemplate/_c_extension.pyx``. Some class starter code is provided.
    This is where a good pythonic interface (functions and classes) should be written.
 
-4. Optionally tweak ``build.py`` (runs at setup/installation) with compiler options.
+4. If adding type hints, update ``pythontemplate/_c_extension.pyi`` to reflect your ``.pyx`` implementation.
+
+5. Optionally tweak ``build.py`` (runs at setup/installation) with compiler options.
    The default ``build.py`` offers a good, working starting point for most projects and performs the following:
 
    a. Recursively searches for all C files in ``pythontemplate/_c_src/``.
@@ -112,16 +114,29 @@ Replace any reference here to ``pythontemplate`` with your project name.
 
    b. Compiles the code defined in ``_c_extension.pyx`` into a shared object file.
 
-   c. Adds ``pythontemplate`` and ``pythontemplate/_c_src`` to the Include Path (variable ``include_dirs``).
+   c. Adds ``pythontemplate`` and ``pythontemplate/_c_src`` to the Include Path (python variable ``include_dirs``).
 
    d. If your codebase contains a slower, python implementation of your Cython code,
       we can allow building to fail by uncommenting the ``allowed_to_fail`` logic at the top.
+      The logic checks for the environment variable ``CIBUILDWHEEL`` because we don't want to allow
+      build failures in our CI when creating pre-built wheels that we upload to PyPI.
 
-5. The Github Action workflow defined in ``.github/workflows/build_wheels.yaml`` will create pre-built
+6. The Github Action workflow defined in ``.github/workflows/build_wheels.yaml`` will create pre-built
    binaries for all major Python versions, operating systems, and computer architectures.
    It will also create a Source Distribution (sdist).
-   Finally, on git semver tags (``vX.X.X``), it will upload all the resulting wheels to PyPI.
+   All of these distributions will be uploaded to the github action job page.
+   On git semver tags (``vX.X.X``), they will be uploaded to PyPI.
 
+When developing, you must re-run ``poetry-install`` to re-compile changes made in C/Cython code.
+The resulting, built Cython code will be importable from ``pythontemplate._c_extension``, so it may be
+good to add something like the following to your ``pythontemplate/__init__.py``:
+
+.. code-block:: python
+
+   __all__ = [
+      "Foo",
+   ]
+   from pythontemplate._c_extension import Foo
 
 Reference
 =========
