@@ -7,6 +7,7 @@ import subprocess  # nosec
 import sys
 from argparse import ArgumentParser
 from datetime import date
+from enum import Enum
 from pathlib import Path
 from typing import List, Union
 
@@ -31,6 +32,20 @@ class col:  # noqa: N801
 
 class BadResponseError(Exception):
     """User gave a response that does not agree with rule set."""
+
+
+class DocFormat(Enum):
+    MARKDOWN = "md"
+    RESTRUCTURED_TEXT = "rst"
+
+    @classmethod
+    def from_str(cls, label):
+        label = label.lower()
+        if label in ("markdown", "md"):
+            return cls.MARKDOWN
+        if label in ("restructuredtext", "rst"):
+            return cls.RESTRUCTURED_TEXT
+        raise BadResponseError("is not a valid choice.")
 
 
 def run(cmds, **kwargs):
@@ -212,6 +227,15 @@ def main():
     )
     use_cython = use_cython in yes_terms
 
+    doc_format = DocFormat.from_str(
+        validate_input(
+            "Do you want README to be markdown or restructuredtext? [default: markdown]",
+            DocFormat.from_str,
+            default="markdown",
+        )
+    )
+    replacements["README.rst"] = f"README.{doc_format.value}"
+
     ######################
     # User Questions End #
     ######################
@@ -287,6 +311,7 @@ def main():
     files.extend(repo.rglob("*.pxd"))
     files.extend(repo.rglob("*.yaml"))
     files.extend(repo.rglob("*.rst"))
+    files.extend(repo.rglob("*.md"))
     files.append(Path("pyproject.toml"))
     files.append(Path(".gitignore"))
 
@@ -303,8 +328,15 @@ def main():
     # Move the app folder
     (repo / "pythontemplate").replace(repo / replacements["pythontemplate"])
 
-    # Move README_TEMPLATE.rst
-    (repo / "README_TEMPLATE.rst").replace(repo / "README.rst")
+    # Move README_TEMPLATE
+    if doc_format == DocFormat.MARKDOWN:
+        (repo / "README_TEMPLATE.rst").replace(repo / "README.rst")
+        (repo / "README_TEMPLATE.md").unlink()
+    elif doc_format == DocFormat.RESTRUCTURED_TEXT:
+        (repo / "README_TEMPLATE.md").replace(repo / "README.md")
+        (repo / "README_TEMPLATE.rst").unlink()
+    else:
+        raise NotImplementedError
 
     run([POETRY_BIN, "config", "virtualenvs.in-project", "true", "--local"])
 
