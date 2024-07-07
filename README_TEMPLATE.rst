@@ -1,4 +1,4 @@
-.. image:: assets/logo_200w.png
+.. image:: https://raw.githubusercontent.com/GIT_USERNAME/GIT_REPONAME/main/assets/logo_200w.png
 
 |Python compat| |PyPi| |GHA tests| |Codecov report| |readthedocs|
 
