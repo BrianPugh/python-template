@@ -48,7 +48,17 @@ Features
 
   * To setup, goto `ReadTheDocs Dashboard`_ and click on "Import a Project".
 
-* `Pre-commit`_ linting and static analysis. The following hooks are pre-configured:
+  * To locally build the docs:
+
+    .. code-block:: console
+
+       cd docs/
+       make html
+
+    This results in html files in ``docs/build/html/``.
+    Double click ``docs/build/html/index.html`` to view the docs in your web browser.
+
+* `Pre-commit`_ linting and static analysis. The following hooks are pre-configured and will automatically run on ``git commit``:
 
   * `Ruff <https://github.com/astral-sh/ruff>`_ - An extremely fast Python linter and formatter.
 
