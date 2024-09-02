@@ -33,9 +33,6 @@ jobs:
         if: steps.cached-dot-local.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
           plugins: |
             poetry-dynamic-versioning[plugin]
 
@@ -83,8 +80,16 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
+        uses: actions/cache@v4
+        id: cached-dot-local
+        with:
+          path: ~/.local
+          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
+
       - name: Install poetry
         uses: snok/install-poetry@v1
+        if: steps.cached-dot-local.outputs.cache-hit != 'true'
         with:
           virtualenvs-create: false
           virtualenvs-in-project: false
@@ -136,8 +141,16 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
+        uses: actions/cache@v4
+        id: cached-dot-local
+        with:
+          path: ~/.local
+          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
+
       - name: Install poetry
         uses: snok/install-poetry@v1
+        if: steps.cached-dot-local.outputs.cache-hit != 'true'
         with:
           virtualenvs-create: false
           virtualenvs-in-project: false
@@ -182,8 +195,16 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
+        uses: actions/cache@v4
+        id: cached-dot-local
+        with:
+          path: ~/.local
+          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
+
       - name: Install poetry
         uses: snok/install-poetry@v1
+        if: steps.cached-dot-local.outputs.cache-hit != 'true'
         with:
           virtualenvs-create: false
           virtualenvs-in-project: false
