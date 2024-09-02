@@ -34,10 +34,8 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
-
-      - name: Add Poetry Plugins
-        run: |
-          poetry self add poetry-dynamic-versioning[plugin]
+          plugins: |
+            poetry-dynamic-versioning[plugin]
 
       - name: Load cached venv
         id: cached-poetry-dependencies
