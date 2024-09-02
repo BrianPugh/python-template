@@ -50,28 +50,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache Poetry Install (Linux)
+      - name: Cache Poetry Install
         uses: actions/cache@v4
         if: runner.os == 'Linux'
         id: cached-poetry
         with:
-          path: ~/.local/share/pypoetry
-          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
-      - name: Cache Poetry Install (macOS)
-        uses: actions/cache@v4
-        if: runner.os == 'macOS'
-        id: cached-poetry
-        with:
-          path: ~/Library/Application Support/pypoetry
-          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
-      - name: Cache Poetry Install (Windows)
-        uses: actions/cache@v4
-        if: runner.os == 'Windows'
-        id: cached-poetry
-        with:
-          path: '%APPDATA%\pypoetry'
+          path:
+            ~/.local/share/pypoetry
+            ~/Library/Application Support/pypoetry
+            %APPDATA%\pypoetry
           key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install poetry
