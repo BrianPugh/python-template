@@ -44,23 +44,25 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
-        uses: actions/cache@v4
-        with:
-          path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{matrix.python-version}}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
       - name: Set up python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
+        uses: actions/cache@v4
+        id: cached-dot-local
+        with:
+          path: ~/.local
+          key: dotlocal-${{ runner.os }}-${{matrix.python-version}}-${{ hashFiles('.github/workflows/tests.yaml') }}
+
       - name: Install poetry
         uses: snok/install-poetry@v1
+        if: steps.cached-dot-local.outputs.cache-hit != 'true'
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
-          installer-parallel: false # Currently there seems to be some race-condition in windows
+          installer-parallel: ${{ runner.os != 'Windows' }} # Currently there seems to be some race-condition in windows
 
       - name: Install library
         run: poetry install --no-interaction
