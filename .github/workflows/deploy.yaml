@@ -16,6 +16,7 @@ jobs:
           fetch-depth: 0 # Includes getting tags
 
       - name: Set up python 3.12
+        id: setup-python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -31,7 +32,7 @@ jobs:
         uses: snok/install-poetry@v1
         if: steps.cached-dot-local.outputs.cache-hit != 'true'
 
-      - name: Configure Poetry  # Needs to be separate from install-poetry because cache.
+      - name: Configure Poetry # Needs to be separate from install-poetry because cache.
         run: |
           poetry self add poetry-dynamic-versioning[plugin]
           poetry config virtualenvs.create true
@@ -42,7 +43,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'

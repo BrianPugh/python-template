@@ -45,6 +45,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up python ${{ matrix.python-version }}
+        id: setup-python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -60,7 +61,7 @@ jobs:
         uses: snok/install-poetry@v1
         if: steps.cached-dot-local.outputs.cache-hit != 'true'
 
-      - name: Configure Poetry  # Needs to be separate from install-poetry because cache.
+      - name: Configure Poetry # Needs to be separate from install-poetry because cache.
         run: |
           poetry self add poetry-dynamic-versioning[plugin]
           poetry config virtualenvs.create true
