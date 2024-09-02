@@ -21,16 +21,33 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
+      - name: Cache Poetry Install (Linux)
         uses: actions/cache@v4
-        id: cached-dot-local
+        if: runner.os == 'Linux'
+        id: cached-poetry
         with:
-          path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/deploy.yaml') }}
+          path: ~/.local/share/pypoetry
+          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
+
+      - name: Cache Poetry Install (macOS)
+        uses: actions/cache@v4
+        if: runner.os == 'macOS'
+        id: cached-poetry
+        with:
+          path: ~/Library/Application Support/pypoetry
+          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
+
+      - name: Cache Poetry Install (Windows)
+        uses: actions/cache@v4
+        if: runner.os == 'Windows'
+        id: cached-poetry
+        with:
+          path: '%APPDATA%\pypoetry'
+          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
-        if: steps.cached-dot-local.outputs.cache-hit != 'true'
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
 
       - name: Configure Poetry # Needs to be separate from install-poetry because cache.
         run: |
