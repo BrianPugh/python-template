@@ -55,7 +55,7 @@ jobs:
         id: cached-dot-local
         with:
           path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/test.yml') }}
+          key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1

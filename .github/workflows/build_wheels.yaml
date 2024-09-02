@@ -27,7 +27,7 @@ jobs:
         id: cached-dot-local
         with:
           path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
+          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/build_wheels.yaml') }}
 
       - name: Install poetry
         if: steps.cached-dot-local.outputs.cache-hit != 'true'
@@ -85,7 +85,7 @@ jobs:
         id: cached-dot-local
         with:
           path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
+          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/build_wheels.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -146,7 +146,7 @@ jobs:
         id: cached-dot-local
         with:
           path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
+          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/build_wheels.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -200,7 +200,7 @@ jobs:
         id: cached-dot-local
         with:
           path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
+          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/build_wheels.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
