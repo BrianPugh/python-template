@@ -63,7 +63,6 @@ jobs:
 
       - name: Configure Poetry # Needs to be separate from install-poetry because cache.
         run: |
-          poetry self add poetry-dynamic-versioning[plugin]
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
           poetry config installer.parallel ${{ runner.os != 'Windows' }} # Currently there seems to be some race-condition in windows
