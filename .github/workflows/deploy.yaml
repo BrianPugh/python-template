@@ -15,27 +15,27 @@ jobs:
         with:
           fetch-depth: 0 # Includes getting tags
 
-      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
-        uses: actions/cache@v4
-        id: cached-dot-local
-        with:
-          path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/deploy.yml') }}
-
       - name: Set up python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
+        uses: actions/cache@v4
+        id: cached-dot-local
+        with:
+          path: ~/.local
+          key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/deploy.yml') }}
+
       - name: Install poetry
         uses: snok/install-poetry@v1
         if: steps.cached-dot-local.outputs.cache-hit != 'true'
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-          plugins: |
-            poetry-dynamic-versioning[plugin]
+
+      - name: Configure Poetry  # Needs to be separate from install-poetry because cache.
+        run: |
+          poetry self add poetry-dynamic-versioning[plugin]
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
 
       - name: Load cached venv
         id: cached-poetry-dependencies
