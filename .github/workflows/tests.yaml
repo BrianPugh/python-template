@@ -62,7 +62,7 @@ jobs:
         uses: snok/install-poetry@v1
         if: steps.cached-poetry.outputs.cache-hit != 'true'
 
-      - name: Add Poetry to PATH  # Needs to be separate from install-poetry because cache.
+      - name: Add Poetry to PATH # Needs to be separate from install-poetry because cache.
         run: |
           echo "$POETRY_HOME/bin" >> $GITHUB_PATH
 
@@ -71,6 +71,13 @@ jobs:
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
           poetry config installer.parallel ${{ runner.os != 'Windows' }} # Currently there seems to be some race-condition in windows
+
+      - name: Cache venv
+        uses: actions/cache@v4
+        id: cached-venv
+        with:
+          path: .venv/
+          key: venv-cache-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install library
         run: poetry install --no-interaction
