@@ -29,6 +29,7 @@ jobs:
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python-version }}
+      POETRY_HOME: "~/poetry"
 
     steps:
       - name: Set OS Environment Variables (Windows)
@@ -44,31 +45,48 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Cache $HOME/.local # Significantly speeds up Poetry Install
-        uses: actions/cache@v4
-        with:
-          path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{matrix.python-version}}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
       - name: Set up python ${{ matrix.python-version }}
+        id: setup-python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Cache Poetry Install
+        uses: actions/cache@v4
+        id: cached-poetry
+        with:
+          path: ${{ env.POETRY_HOME }}
+          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/tests.yaml') }}
+
       - name: Install poetry
         uses: snok/install-poetry@v1
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
+
+      - name: Add Poetry to PATH # Needs to be separate from install-poetry because cache.
+        run: |
+          echo "$POETRY_HOME/bin" >> $GITHUB_PATH
+
+      - name: Configure Poetry # Needs to be separate from install-poetry because cache.
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+          poetry config installer.parallel ${{ runner.os != 'Windows' }} # Currently there seems to be some race-condition in windows
+
+      - name: Cache venv
+        uses: actions/cache@v4
+        id: cached-venv
         with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: false # Currently there seems to be some race-condition in windows
+          path: .venv/
+          key: venv-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install library
         run: poetry install --no-interaction
 
-      - uses: actions/cache@v4
+      - name: Cache pre-commit
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit/
-          key: pre-commit-4|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+          key: pre-commit-${{ runner.os }}-${{ env.pythonLocation }}-${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Pre-commit run
         run: |
