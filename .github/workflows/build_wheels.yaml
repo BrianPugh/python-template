@@ -11,30 +11,41 @@ jobs:
   build_sdist:
     name: "sdist"
     runs-on: ubuntu-latest
+    env:
+      PYTHON: 3.12
+      POETRY_HOME: "~/poetry"
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up python 3.12
+      - name: Set up python ${{ env.PYTHON }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ env.PYTHON }}
 
       - name: Cache Poetry Install
         uses: actions/cache@v4
         id: cached-poetry
         with:
-          path: ~/.local
-          key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/build_wheels.yaml') }}
+          path: ${{ env.POETRY_HOME }}
+          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/build_wheels.yaml') }}
 
       - name: Install poetry
         if: steps.cached-poetry.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
-        with:
-          plugins: |
-            poetry-dynamic-versioning[plugin]
+
+      - name: Add Poetry to PATH # Needs to be separate from install-poetry because cache.
+        run: |
+          echo "$POETRY_HOME/bin" >> $GITHUB_PATH
+
+      - name: Configure Poetry # Needs to be separate from install-poetry because cache.
+        run: |
+          poetry self add poetry-dynamic-versioning[plugin]
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
 
       - name: Build sdist
         run: |
@@ -58,6 +69,8 @@ jobs:
           - os: windows-latest
             cibw_build: "cp38-*"
             cibw_archs: "ARM64"
+    env:
+      PYTHON: 3.12
 
     steps:
       - name: "Set environment variables (Windows)"
@@ -75,25 +88,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up python 3.12
+      - name: Set up python ${{ env.PYTHON }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-
-      - name: Cache Poetry Install (Windows)
-        uses: actions/cache@v4
-        id: cached-poetry
-        with:
-          path: '%APPDATA%\pypoetry'
-          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
-      - name: Install poetry
-        uses: snok/install-poetry@v1
-        if: steps.cached-poetry.outputs.cache-hit != 'true'
-        with:
-          virtualenvs-create: false
-          virtualenvs-in-project: false
-          installer-parallel: false # Currently there seems to be some race-condition in windows
+          python-version: ${{ env.PYTHON }}
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5
@@ -118,6 +116,8 @@ jobs:
         os: [ubuntu-latest]
         cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["x86_64", "i686", "aarch64", "ppc64le"]
+    env:
+      PYTHON: 3.12
 
     steps:
       - name: Check out repository
@@ -136,24 +136,10 @@ jobs:
         with:
           platforms: all
 
-      - name: Set up python 3.12
+      - name: Set up python ${{ env.PYTHON }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-
-      - name: Cache Poetry Install (Linux)
-        uses: actions/cache@v4
-        id: cached-poetry
-        with:
-          path: ~/.local/share/pypoetry
-          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
-      - name: Install poetry
-        uses: snok/install-poetry@v1
-        if: steps.cached-poetry.outputs.cache-hit != 'true'
-        with:
-          virtualenvs-create: false
-          virtualenvs-in-project: false
+          python-version: ${{ env.PYTHON }}
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5
@@ -178,6 +164,7 @@ jobs:
         cibw_build: ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["x86_64"]
     env:
+      PYTHON: 3.12
       SYSTEM_VERSION_COMPAT: 0 # https://github.com/actions/setup-python/issues/469#issuecomment-1192522949
     steps:
       - name: Check out repository
@@ -190,24 +177,10 @@ jobs:
         run: echo "CIBW_BUILD_SANITIZED=$(echo '${{ matrix.cibw_build }}' | sed 's/\*/_/g')" >> $GITHUB_ENV
         shell: bash
 
-      - name: Set up python 3.12
+      - name: Set up python ${{ env.PYTHON }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-
-      - name: Cache Poetry Install (macOS)
-        uses: actions/cache@v4
-        id: cached-poetry
-        with:
-          path: ~/Library/Application Support/pypoetry
-          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
-      - name: Install poetry
-        uses: snok/install-poetry@v1
-        if: steps.cached-poetry.outputs.cache-hit != 'true'
-        with:
-          virtualenvs-create: false
-          virtualenvs-in-project: false
+          python-version: ${{ env.PYTHON }}
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5

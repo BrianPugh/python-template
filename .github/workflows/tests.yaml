@@ -56,7 +56,7 @@ jobs:
         id: cached-poetry
         with:
           path: ${{ env.POETRY_HOME }}
-          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/tests.yaml') }}
+          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1

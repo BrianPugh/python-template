@@ -12,6 +12,7 @@ jobs:
     env:
       PYTHON: 3.12
       POETRY_HOME: "~/poetry"
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,11 +30,15 @@ jobs:
         id: cached-poetry
         with:
           path: ${{ env.POETRY_HOME }}
-          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/tests.yaml') }}
+          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/deploy.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
         if: steps.cached-poetry.outputs.cache-hit != 'true'
+
+      - name: Add Poetry to PATH # Needs to be separate from install-poetry because cache.
+        run: |
+          echo "$POETRY_HOME/bin" >> $GITHUB_PATH
 
       - name: Configure Poetry # Needs to be separate from install-poetry because cache.
         run: |
@@ -46,7 +51,7 @@ jobs:
         id: cached-venv
         with:
           path: .venv/
-          key: venv-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/tests.yaml') }}
+          key: venv-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/deploy.yaml') }}
 
       - name: Install project
         run: poetry install --no-interaction
