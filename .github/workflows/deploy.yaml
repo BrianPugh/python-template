@@ -9,41 +9,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PYTHON: 3.12
+      POETRY_HOME: "~/poetry"
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Includes getting tags
 
-      - name: Set up python 3.12
+      - name: Set up python ${{ env.PYTHON }}
         id: setup-python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ env.PYTHON }}
 
-      - name: Cache Poetry Install (Linux)
+      - name: Cache Poetry Install
         uses: actions/cache@v4
-        if: runner.os == 'Linux'
         id: cached-poetry
         with:
-          path: ~/.local/share/pypoetry
-          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
-      - name: Cache Poetry Install (macOS)
-        uses: actions/cache@v4
-        if: runner.os == 'macOS'
-        id: cached-poetry
-        with:
-          path: ~/Library/Application Support/pypoetry
-          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
-
-      - name: Cache Poetry Install (Windows)
-        uses: actions/cache@v4
-        if: runner.os == 'Windows'
-        id: cached-poetry
-        with:
-          path: '%APPDATA%\pypoetry'
-          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
+          path: ${{ env.POETRY_HOME }}
+          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
@@ -55,19 +41,15 @@ jobs:
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
+      - name: Cache venv
         uses: actions/cache@v4
+        id: cached-venv
         with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}
-
-      - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root --without=dev
+          path: .venv/
+          key: venv-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install project
-        run: poetry install --no-interaction --without=dev
+        run: poetry install --no-interaction
 
       - name: Build package
         run: poetry build
