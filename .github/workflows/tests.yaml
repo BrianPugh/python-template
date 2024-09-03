@@ -29,6 +29,7 @@ jobs:
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python-version }}
+      POETRY_HOME: "~/poetry"
 
     steps:
       - name: Set OS Environment Variables (Windows)
@@ -50,23 +51,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Get Poetry cache directory
-        id: poetry-cache-dir
-        run: |
-          if [ "${{ runner.os }}" == "Linux" ]; then
-            echo "dir=~/.local/share/pypoetry" >> $GITHUB_OUTPUT
-          elif [ "${{ runner.os }}" == "macOS" ]; then
-            echo "dir=~/Library/Application Support/pypoetry" >> $GITHUB_OUTPUT
-          elif [ "${{ runner.os }}" == "Windows" ]; then
-            echo "dir=$APPDATA\pypoetry" >> $GITHUB_OUTPUT
-          fi
-
       - name: Cache Poetry Install
         uses: actions/cache@v4
         if: runner.os == 'Linux'
         id: cached-poetry
         with:
-          path: ${{ steps.poetry-cache-dir.outputs.dir }}
+          path: ${{ env.POETRY_HOME }}
           key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install poetry
