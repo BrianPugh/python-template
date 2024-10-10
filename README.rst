@@ -157,7 +157,7 @@ this template at https://github.com/BrianPugh/python-template .
 .. |GHA tests| image:: https://github.com/BrianPugh/python-template/workflows/tests/badge.svg
    :target: https://github.com/BrianPugh/python-template/actions?query=workflow%3Atests
    :alt: GHA Status
-.. |Python compat| image:: https://img.shields.io/badge/>=python-3.8-blue.svg
+.. |Python compat| image:: https://img.shields.io/badge/>=python-3.9-blue.svg
 
 .. _Codecov Dashboard: https://app.codecov.io/gh
 .. _Docker: https://www.docker.com

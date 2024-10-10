@@ -1,7 +1,7 @@
 Installation
 ============
 
-pythontemplate requires Python ``>=3.8`` and can be installed from pypi via:
+pythontemplate requires Python ``>=3.9`` and can be installed from pypi via:
 
 .. code-block:: bash
 
