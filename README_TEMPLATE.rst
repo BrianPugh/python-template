@@ -16,7 +16,7 @@ Features
 Installation
 ============
 
-pythontemplate requires Python ``>=3.8`` and can be installed via:
+pythontemplate requires Python ``>=3.9`` and can be installed via:
 
 .. code-block:: bash
 
@@ -42,6 +42,6 @@ Usage
 .. |readthedocs| image:: https://readthedocs.org/projects/GIT_REPONAME/badge/?version=latest
         :target: https://GIT_REPONAME.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
-.. |Python compat| image:: https://img.shields.io/badge/>=python-3.8-blue.svg
+.. |Python compat| image:: https://img.shields.io/badge/>=python-3.9-blue.svg
 .. |PyPi| image:: https://img.shields.io/pypi/v/pythontemplate.svg
         :target: https://pypi.python.org/pypi/pythontemplate
