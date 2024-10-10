@@ -5,6 +5,8 @@ import readline
 import shutil
 import subprocess  # nosec
 import sys
+import urllib.error
+import urllib.request
 from argparse import ArgumentParser
 from datetime import date
 from enum import Enum
@@ -47,6 +49,32 @@ class DocFormat(Enum):
         if label in ("restructuredtext", "rst"):
             return cls.RESTRUCTURED_TEXT
         raise BadResponseError("is not a valid choice.")
+
+
+def _check_pypi_name_available(package_name) -> Union[None, bool]:
+    try:
+        urllib.request.urlopen(f"https://pypi.org/pypi/{package_name}/json")  # noqa: S310
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return True  # Package does not exist (name is available)
+    except urllib.error.URLError as e:
+        print(f"Failed to reach PyPI server. Reason: {e.reason}")
+    else:
+        return False  # If we reach this point, the package exists (name is not available)
+    return None  # Unable to determine
+
+
+def is_pypi_name_available(package_name):
+    availability = _check_pypi_name_available(package_name)
+    if availability:
+        return
+    elif availability is None:
+        msg = "Failed to check PyPI for name availability. Continue? [default: no]"
+    else:
+        msg = f"{package_name!r} is not available on PyPI. Continue? [default: no]"
+    response = validate_input(msg, is_boolean, default="no")
+    if response not in yes_terms:
+        raise BadResponseError
 
 
 def run(cmds, **kwargs):
@@ -94,12 +122,17 @@ def validate_input(prompt, validate=None, default=""):
         if validate is None or cli_args.no_verify:
             break
 
+        if callable(validate):
+            validate = [validate]
+
         try:
-            validate(response)
+            for v in validate:
+                v(response)
             break
         except BadResponseError as e:
-            print(f'"{response}" {e}')
-            print('To disable these validation checks, run "./bootstrap --no-verify"')
+            if str(e):
+                print(f'"{response}" {e}')
+            print('!!! To disable these validation checks, run "./bootstrap --no-verify"')
     return response
 
 
@@ -217,7 +250,7 @@ def main():
     # User Questions Begin #
     ########################
     replacements["YOUR_NAME_HERE"] = validate_input("Enter your name", is_not_empty)
-    replacements["pythontemplate"] = validate_input("Python Module Name", good_module_name)
+    replacements["pythontemplate"] = validate_input("Python Module Name", (good_module_name, is_pypi_name_available))
     replacements["cpythontemplate"] = "c" + replacements["pythontemplate"]
     is_library = validate_input(
         "Is this going to be a library? [default: yes]",
