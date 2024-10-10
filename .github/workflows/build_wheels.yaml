@@ -22,6 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up python ${{ env.PYTHON }}
+        id: setup-python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON }}
@@ -31,7 +32,7 @@ jobs:
         id: cached-poetry
         with:
           path: ${{ env.POETRY_HOME }}
-          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('.github/workflows/build_wheels.yaml') }}
+          key: poetry-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/build_wheels.yaml') }}
 
       - name: Install poetry
         if: steps.cached-poetry.outputs.cache-hit != 'true'
@@ -90,6 +91,7 @@ jobs:
 
       - name: Set up python ${{ env.PYTHON }}
         uses: actions/setup-python@v5
+        id: setup-python
         with:
           python-version: ${{ env.PYTHON }}
 
@@ -138,6 +140,7 @@ jobs:
 
       - name: Set up python ${{ env.PYTHON }}
         uses: actions/setup-python@v5
+        id: setup-python
         with:
           python-version: ${{ env.PYTHON }}
 
@@ -179,6 +182,7 @@ jobs:
 
       - name: Set up python ${{ env.PYTHON }}
         uses: actions/setup-python@v5
+        id: setup-python
         with:
           python-version: ${{ env.PYTHON }}
 
@@ -211,6 +215,7 @@ jobs:
           fetch-depth: 0
 
       - uses: actions/setup-python@v5
+        id: setup-python
         with:
           python-version: "3.12"
 
