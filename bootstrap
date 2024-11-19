@@ -235,6 +235,7 @@ def main():
 
     replacements: dict[str, str] = {
         "CURRENT_YEAR_HERE": str(date.today().year),
+        "README_TEMPLATE": "README",
     }
 
     git_remote_url = git("config", "--get", "remote.origin.url").decode().strip()
@@ -379,6 +380,7 @@ def main():
     files.extend(REPO.rglob("*.md"))
     files.append(Path("pyproject.toml"))
     files.append(Path(".gitignore"))
+    files.append(Path("docs/source/index.rst"))
 
     if not is_library:
         files.append(Path("Dockerfile"))
