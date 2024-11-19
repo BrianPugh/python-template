@@ -1,7 +1,7 @@
 Welcome to pythontemplate's documentation!
 ==========================================
 
-.. include:: ../../README.rst
+.. include:: ../../README_TEMPLATE.rst
   :start-after: inclusion-marker-do-not-remove
 
 .. toctree::
