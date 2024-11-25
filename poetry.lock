@@ -288,13 +288,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "cyclopts"
-version = "3.0.0"
+version = "3.1.0"
 description = ""
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "cyclopts-3.0.0-py3-none-any.whl", hash = "sha256:d780f08218c7e51ee897ae3adfaf7664508c471f444ec664090df77aad4218f1"},
-    {file = "cyclopts-3.0.0.tar.gz", hash = "sha256:603389e7bb28e54828e2a30c300158db3e1bf0666065d0ba5f1c0dfa7d1eb5f8"},
+    {file = "cyclopts-3.1.0-py3-none-any.whl", hash = "sha256:a099fe98e9410f04ae1f4e37823b1f0fa67169bb45443eae5df623063f12a220"},
+    {file = "cyclopts-3.1.0.tar.gz", hash = "sha256:0d45e4aa8b641f8a9c9df897ecc4df45108c20d146663dd466c92f687d449fa7"},
 ]
 
 [package.dependencies]
@@ -1449,4 +1449,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "a484376777fd21b9fd3130ca9e3b0087dc3583982ed2c196d7c69074b3667165"
+content-hash = "f2cafa6d369c6eae6df6678cd529778042c27396df474d5cd21fd303bfdbdeab"
