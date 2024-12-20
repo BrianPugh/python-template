@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 from datetime import date
 from enum import Enum
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 
 parser = ArgumentParser(description="Prepares python project repository.")
 parser.add_argument("--no-verify", action="store_true", help="Disable input verification.")
@@ -330,7 +330,7 @@ def main():
         )
     else:
         # Delete cython-related files
-        paths_to_delete: List[Union[str, Path]] = [
+        paths_to_delete: list[Union[str, Path]] = [
             ".github/workflows/build_wheels.yaml",
             "build.py",
             "pythontemplate/_c_src",
