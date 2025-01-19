@@ -80,7 +80,7 @@ jobs:
           key: venv-cache-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/tests.yaml') }}
 
       - name: Install library
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction -vvv
 
       - name: Cache pre-commit
         uses: actions/cache@v4
