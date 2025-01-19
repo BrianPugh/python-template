@@ -212,6 +212,7 @@ def git_remote_to_username_repo(git_remote_url):
 
 
 def add_to_pyproject(after, new_line, replace=False):
+    """Places ``new_line`` after (or replaces) ``after`` line."""
     if not new_line.endswith("\n"):
         new_line += "\n"
 
@@ -316,8 +317,8 @@ def main():
         Path(".github/workflows/deploy.yaml").unlink()
 
         add_to_pyproject(
-            'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1"]',
-            'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1", "Cython>=3.0.0", "setuptools>=61.0"]',
+            'requires = ["poetry-core>=2.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]',
+            'requires = ["poetry-core>=2.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0", "Cython>=3.0.0", "setuptools>=61.0"]',
             replace=True,
         )
         add_to_pyproject(

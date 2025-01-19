@@ -1,36 +1,47 @@
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1"]
+requires = ["poetry-core>=2.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
 build-backend = "poetry_dynamic_versioning.backend"
+
+[project]
+name = "pythontemplate"
+dynamic = ["version"]
+description = ""
+readme = "README.rst"
+license = "Apache-2.0"
+authors = [
+    {name = "YOUR_NAME_HERE"},
+]
+
+# Be as loose as possible if writing a library.
+requires-python = ">=3.9"
+dependencies = [
+    "typing-extensions>=4.12.2",
+    "rich>=10.11.0",
+    "cyclopts (>=3.1.5, <4.0.0)",
+]
+
+[project.urls]
+homepage = "https://github.com/GIT_USERNAME/GIT_REPONAME"
+github = "https://github.com/GIT_USERNAME/GIT_REPONAME"
+
+[project.scripts]
+pythontemplate = "pythontemplate.cli.main:run_app"
+
+[tool.poetry]
+packages = [{include = "pythontemplate"}]
+include = ["pythontemplate/*.so", "pythontemplate/*.pyd"]  # Compiled extensions
+version = "0.0.0"  # Do not change, let poetry-dynamic-versioning handle it.
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
 
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
 style = "semver"
 
-[tool.poetry]
-name = "pythontemplate"
-version = "0.0.0"  # Do not change, let poetry-dynamic-versioning handle it.
-homepage = "https://github.com/GIT_USERNAME/GIT_REPONAME"
-repository = "https://github.com/GIT_USERNAME/GIT_REPONAME"
-license = "Apache-2.0"
-description = ""
-authors = ["YOUR_NAME_HERE"]
-readme = "README.rst"
-packages = [{include = "pythontemplate"}]
-include = ["pythontemplate/*.so", "pythontemplate/*.pyd"]  # Compiled extensions
-
 [tool.poetry.build]
 generate-setup-file = false
-
-[tool.poetry.scripts]
-pythontemplate = "pythontemplate.cli.main:run_app"
-
-[tool.poetry.dependencies]
-# Be as loose as possible if writing a library.
-python = "^3.9"
-typing-extensions = "^4.12.2"
-rich = ">=10.11.0"
-cyclopts = "^3.1.5"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "~7.4.7"
@@ -180,7 +191,7 @@ skip = 'poetry.lock,'
 venvs=[".venv"]
 paths=["pythontemplate"]
 deps-file="pyproject.toml"
-sections=["tool.poetry.dependencies"]
+sections=["project.dependencies"]
 exclude-deps =[
   "rich",
   "typing-extensions",
