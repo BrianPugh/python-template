@@ -30,7 +30,7 @@ pythontemplate = "pythontemplate.cli.main:run_app"
 python = "^3.9"
 typing-extensions = "^4.13.2"
 rich = ">=10.11.0"
-cyclopts = "^3.13.1"
+cyclopts = "^3.14.2"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "~7.4.7"
