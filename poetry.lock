@@ -303,14 +303,14 @@ toml = ["tomli ; python_full_version <= \"3.11.0a6\""]
 
 [[package]]
 name = "cyclopts"
-version = "3.16.2"
+version = "3.18.0"
 description = "Intuitive, easy CLIs based on type hints."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "cyclopts-3.16.2-py3-none-any.whl", hash = "sha256:3d93cb66af31617343861bc51aa16e5a021ad7590dbd7a6f0634d5e3a1ef8e3b"},
-    {file = "cyclopts-3.16.2.tar.gz", hash = "sha256:2e570336b6b1b1e10747af478f675b7cd7f66e3138a7d9bbd0aa10adf437b0d5"},
+    {file = "cyclopts-3.18.0-py3-none-any.whl", hash = "sha256:e4beb946aa410a8f511d3acb824d2a05452188baa2cb219f96645a644ac8e486"},
+    {file = "cyclopts-3.18.0.tar.gz", hash = "sha256:c6b414e457b55d0d6bcc7840afd6c9102b534329f7058e31391060f02f3e3556"},
 ]
 
 [package.dependencies]
@@ -1530,4 +1530,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "5660b8b4d4f2e496c499fb8bb85eb174896307efe27520762ae0058fbb3f3fa2"
+content-hash = "b6fef88475138f028abe6e102c1a1201f5e5a022dcbb524bf46724eaeea18213"
