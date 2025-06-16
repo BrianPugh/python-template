@@ -28,7 +28,7 @@ pythontemplate = "pythontemplate.cli.main:run_app"
 [tool.poetry.dependencies]
 # Be as loose as possible if writing a library.
 python = "^3.9"
-typing-extensions = "^4.13.2"
+typing-extensions = "^4.14.0"
 rich = ">=10.11.0"
 cyclopts = "^3.18.0"
 
