@@ -86,7 +86,7 @@ def check_and_install_poetry():
     global POETRY_BIN
     if not POETRY_BIN:
         print("poetry not found. Installing...")
-        run(
+        run(  # noqa: S604
             "curl -sSL https://install.python-poetry.org | python3 -",
             shell=True,  # noqa: S604
         )
