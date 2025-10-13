@@ -34,11 +34,11 @@ Features
 
 * Features dependent if project is a library or a standalone project.
 
-* `Poetry`_ support.
+* `uv`_ support.
 
-  * If not installed, Poetry will automatically be installed when running ``bootstrap``.
+  * If not installed, uv will automatically be installed when running ``bootstrap``.
 
-  * `Poetry Dynamic Versioning`_ - Dynamically handles your project version based on git tags.
+  * `hatch-vcs`_ - Dynamically handles your project version based on git tags.
 
 * Optional command line interface boilerplate using Cyclopts_.
 
@@ -137,7 +137,7 @@ Replace any reference here to ``pythontemplate`` with your project name.
    All of these distributions will be uploaded to the github action job page.
    On git semver tags (``vX.X.X``), they will be uploaded to PyPI.
 
-When developing, you must re-run ``poetry-install`` to re-compile changes made in C/Cython code.
+When developing, you must re-run ``uv sync`` to re-compile changes made in C/Cython code.
 The resulting, built Cython code will be importable from ``pythontemplate._c_extension``, so it may be
 good to add something like the following to your ``pythontemplate/__init__.py``:
 
@@ -162,7 +162,7 @@ this template at https://github.com/BrianPugh/python-template .
 .. _Codecov Dashboard: https://app.codecov.io/gh
 .. _Docker: https://www.docker.com
 .. _GitHub secrets: https://docs.github.com/en/actions/security-guides/encrypted-secrets
-.. _Poetry: https://python-poetry.org
+.. _uv: https://docs.astral.sh/uv/
 .. _Pre-commit: https://pre-commit.com
 .. _PyPI API token: https://pypi.org/help/#apitoken
 .. _ReadTheDocs Dashboard: https://readthedocs.org/dashboard/
@@ -170,5 +170,5 @@ this template at https://github.com/BrianPugh/python-template .
 .. _Sphinx: https://www.sphinx-doc.org/en/master/
 .. _token: https://docs.docker.com/docker-hub/access-tokens/
 .. _Cython: https://cython.readthedocs.io/en/latest/
-.. _Poetry Dynamic Versioning: https://github.com/mtkennerly/poetry-dynamic-versioning
+.. _hatch-vcs: https://github.com/ofek/hatch-vcs
 .. _Cyclopts: https://github.com/BrianPugh/cyclopts

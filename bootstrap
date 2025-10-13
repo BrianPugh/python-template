@@ -17,7 +17,7 @@ parser = ArgumentParser(description="Prepares python project repository.")
 parser.add_argument("--no-verify", action="store_true", help="Disable input verification.")
 cli_args = parser.parse_args()
 
-POETRY_BIN = shutil.which("poetry")
+UV_BIN = shutil.which("uv")
 REPO = Path(__file__).parent
 
 
@@ -82,29 +82,24 @@ def run(cmds, **kwargs):
     subprocess.run(cmds, capture_output=False, check=True, **kwargs)  # noqa: S603
 
 
-def check_and_install_poetry():
-    global POETRY_BIN
-    if not POETRY_BIN:
-        print("poetry not found. Installing...")
+def check_and_install_uv():
+    global UV_BIN
+    if not UV_BIN:
+        print("uv not found. Installing...")
         run(  # noqa: S604
-            "curl -sSL https://install.python-poetry.org | python3 -",
+            "curl -LsSf https://astral.sh/uv/install.sh | sh",
             shell=True,  # noqa: S604
         )
-        POETRY_BIN = str(Path("~/.local/bin/poetry").expanduser())
+        UV_BIN = str(Path("~/.local/bin/uv").expanduser())
 
-    # Check if the poetry installation is potentially broken; see issue #46
+    # Check if the uv installation is working
     try:
-        subprocess.check_output(["poetry", "--version"])  # noqa: S603, S607
+        subprocess.check_output(["uv", "--version"])  # noqa: S603, S607
     except subprocess.CalledProcessError:
         print(
-            f"{col.FAIL}\n\nPoetry installation failed healthcheck. Manual debugging required. It is unlikely that python-template's bootstrapping is at fault.\n{col.ENDC}"
+            f"{col.FAIL}\n\nuv installation failed healthcheck. Manual debugging required. It is unlikely that python-template's bootstrapping is at fault.\n{col.ENDC}"
         )
         sys.exit(1)
-
-    response = subprocess.check_output(["poetry", "self", "show", "plugins"]).decode()  # noqa: S603, S607
-    if "poetry-dynamic-versioning" not in response:
-        # Add necessary poetry plugins
-        run(["poetry", "self", "add", "poetry-dynamic-versioning[plugin]"])
 
 
 def camel_to_snake(s):
@@ -231,7 +226,7 @@ def add_to_pyproject(after, new_line, replace=False):
 
 
 def main():
-    check_and_install_poetry()
+    check_and_install_uv()
 
     replacements: dict[str, str] = {
         "CURRENT_YEAR_HERE": str(date.today().year),
@@ -312,20 +307,20 @@ def main():
         remove_lines_in_file("pyproject.toml", 'pythontemplate = "pythontemplate.cli.main:run_app"')
 
     if use_cython:
-        # Forgo nice simple poetry action for CIBuildWheel.
+        # Forgo nice simple uv action for CIBuildWheel.
         Path(".github/workflows/deploy.yaml").unlink()
 
         add_to_pyproject(
-            'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1"]',
-            'requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1", "Cython>=3.0.0", "setuptools>=61.0"]',
+            'requires = ["hatchling", "hatch-vcs"]',
+            'requires = ["hatchling", "hatch-vcs", "Cython>=3.0.0", "setuptools>=61.0"]',
             replace=True,
         )
         add_to_pyproject(
-            "[tool.poetry.group.dev.dependencies]",
-            'cython = ">=1.0.0"',
+            "dev = [",
+            '    "cython>=1.0.0",',
         )
         add_to_pyproject(
-            "[tool.poetry.build]",
+            "[tool.hatch.build.targets.wheel]",
             "script = 'build.py'",
         )
     else:
@@ -352,8 +347,8 @@ def main():
         (REPO / "README_TEMPLATE.md").replace(REPO / "README.md")
         (REPO / "README_TEMPLATE.rst").unlink()
         add_to_pyproject(
-            "[tool.poetry.group.docs.dependencies]",
-            'myst-parser = {extras = ["linkify"], version = "^3.0.1"}',
+            "docs = [",
+            '    "myst-parser[linkify]>=3.0.1",',
         )
         replacements[":start-after: inclusion-marker-do-not-remove"] = ":parser: myst_parser.sphinx_"
     elif doc_format == DocFormat.RESTRUCTURED_TEXT:
@@ -395,16 +390,13 @@ def main():
     # Move the app folder
     (REPO / "pythontemplate").replace(REPO / replacements["pythontemplate"])
 
-    run([POETRY_BIN, "config", "virtualenvs.in-project", "true", "--local"])
-
     if not include_cli:
-        run([POETRY_BIN, "remove", "cyclopts"])
-        run([POETRY_BIN, "remove", "rich"])
+        run([UV_BIN, "remove", "cyclopts"])
+        run([UV_BIN, "remove", "rich"])
 
-    run([POETRY_BIN, "update"])
-    run([POETRY_BIN, "install"])
-    run(["poetry", "run", "python", "-m", "pre_commit", "install"])
-    run(["poetry", "run", "python", "-m", "pre_commit", "autoupdate"])
+    run([UV_BIN, "sync", "--all-extras"])
+    run([UV_BIN, "run", "python", "-m", "pre_commit", "install"])
+    run([UV_BIN, "run", "python", "-m", "pre_commit", "autoupdate"])
 
     # Delete this script
     Path(__file__).unlink()

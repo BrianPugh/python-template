@@ -1,56 +1,55 @@
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.1"]
-build-backend = "poetry_dynamic_versioning.backend"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
-[tool.poetry-dynamic-versioning]
-enable = true
-vcs = "git"
-style = "semver"
-
-[tool.poetry]
+[project]
 name = "pythontemplate"
-version = "0.0.0"  # Do not change, let poetry-dynamic-versioning handle it.
-homepage = "https://github.com/GIT_USERNAME/GIT_REPONAME"
-repository = "https://github.com/GIT_USERNAME/GIT_REPONAME"
-license = "Apache-2.0"
+dynamic = ["version"]
 description = ""
-authors = ["YOUR_NAME_HERE"]
 readme = "README.rst"
-packages = [{include = "pythontemplate"}]
-include = ["pythontemplate/*.so", "pythontemplate/*.pyd"]  # Compiled extensions
+requires-python = ">=3.9"
+license = "Apache-2.0"
+authors = [
+    {name = "YOUR_NAME_HERE"},
+]
+dependencies = [
+    "typing-extensions>=4.15.0",
+    "rich>=10.11.0",
+    "cyclopts>=3.24.0",
+]
 
-[tool.poetry.build]
-generate-setup-file = false
+[project.optional-dependencies]
+docs = [
+    "sphinx~=7.4.7",
+    "sphinx-rtd-theme~=3.0.2",
+    "gitpython>=3.1.31",
+    "sphinx-copybutton>=0.5.2",
+]
+dev = [
+    "coverage[toml]>=5.1",
+    "pre-commit>=2.16.0",
+    "pytest>=7.1.2",
+    "pytest-cov>=3.0.0",
+    "pytest-mock>=3.7.0",
+]
+debug = [
+    "ipdb>=0.13.9",
+    "line-profiler>=3.5.1",
+]
 
-[tool.poetry.scripts]
+[project.scripts]
 pythontemplate = "pythontemplate.cli.main:run_app"
 
-[tool.poetry.dependencies]
-# Be as loose as possible if writing a library.
-python = "^3.9"
-typing-extensions = "^4.15.0"
-rich = ">=10.11.0"
-cyclopts = "^3.24.0"
+[project.urls]
+Homepage = "https://github.com/GIT_USERNAME/GIT_REPONAME"
+Repository = "https://github.com/GIT_USERNAME/GIT_REPONAME"
 
-[tool.poetry.group.docs.dependencies]
-sphinx = "~7.4.7"
-sphinx_rtd_theme = "~3.0.2"
-gitpython = ">=3.1.31"
-sphinx-copybutton = "^0.5.2"
+[tool.hatch.version]
+source = "vcs"
 
-[tool.poetry.group.dev.dependencies]
-coverage = {extras = ["toml"], version = ">=5.1"}
-pre_commit = ">=2.16.0"
-pytest = ">=7.1.2"
-pytest-cov = ">=3.0.0"
-pytest-mock = ">=3.7.0"
-
-[tool.poetry.group.debug]
-optional = true
-
-[tool.poetry.group.debug.dependencies]
-ipdb = ">=0.13.9"
-line_profiler = ">=3.5.1"
+[tool.hatch.build.targets.wheel]
+packages = ["pythontemplate"]
+artifacts = ["*.so", "*.pyd"]
 
 [tool.coverage.run]
 branch = true
@@ -174,13 +173,13 @@ staticmethod-decorators = [
 ]
 
 [tool.codespell]
-skip = 'poetry.lock,'
+skip = 'uv.lock,'
 
 [tool.creosote]
 venvs=[".venv"]
 paths=["pythontemplate"]
 deps-file="pyproject.toml"
-sections=["tool.poetry.dependencies"]
+sections=["project.dependencies"]
 exclude-deps =[
   "rich",
   "typing-extensions",

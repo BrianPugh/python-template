@@ -244,6 +244,3 @@ Temporary Items
 # Cython
 pythontemplate/_c_extension.c
 pythontemplate/*.html
-
-# Poetry
-poetry.toml

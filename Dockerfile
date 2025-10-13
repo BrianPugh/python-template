@@ -2,7 +2,6 @@
 FROM ubuntu:20.04 AS build
 
 ENV PATH "/root/.local/bin/:$PATH"
-ENV POETRY_INSTALLER_MAX_WORKERS 8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	python3 \
@@ -15,13 +14,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-venv\
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 COPY . /pythontemplate
 
 WORKDIR /pythontemplate
 
-RUN poetry install --without=dev,docs \
+RUN uv sync --no-dev \
     && rm -rf .git
 
 
