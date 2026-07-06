@@ -5,7 +5,16 @@
 .github
 .gitignore
 .pre-commit-config.yaml
+.pytest_cache
 .readthedocs.yaml
+.ruff_cache
+.venv
 assets
+build
+dist
 docs
 tests
+wheelhouse
+**/__pycache__
+*.so
+*.pyd

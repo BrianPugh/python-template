@@ -1,35 +1,35 @@
-# syntax=docker/dockerfile:1.4.1
-FROM ubuntu:20.04 AS build
+# syntax=docker/dockerfile:1
+FROM ubuntu:24.04 AS build
 
-ENV PATH "/root/.local/bin/:$PATH"
-ENV POETRY_INSTALLER_MAX_WORKERS 8
+COPY --from=ghcr.io/astral-sh/uv:0.11 /uv /uvx /bin/
+
+# Use the system python and compile bytecode for faster container startup.
+ENV UV_PYTHON_PREFERENCE=only-system \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	python3 \
+    python3 \
+    python3-dev \
+    python3-venv \
     build-essential \
     ca-certificates \
-    ca-certificates \
-    curl \
     git \
-    python3-dev \
-    python3-venv\
     && rm -rf /var/lib/apt/lists/*
-
-RUN curl -sSL https://install.python-poetry.org | python3 -
 
 COPY . /pythontemplate
 
 WORKDIR /pythontemplate
 
-RUN poetry install --without=dev,docs \
+RUN uv sync --no-default-groups \
     && rm -rf .git
 
 
 
 
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
-ENV PATH ".venv/bin:$PATH"
+ENV PATH="/pythontemplate/.venv/bin:$PATH"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         python3 \

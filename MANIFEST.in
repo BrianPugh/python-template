@@ -1,0 +1,3 @@
+include pythontemplate/_c_extension.pyx
+include pythontemplate/cpythontemplate.pxd
+recursive-include pythontemplate/_c_src *.c *.h
