@@ -14,7 +14,7 @@ To install directly from github, you can run:
 
    python -m pip install git+https://github.com/GIT_USERNAME/GIT_REPONAME.git
 
-For development, its recommended to use uv:
+For development, it's recommended to use uv:
 
 .. code-block:: bash
 
