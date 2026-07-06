@@ -37,7 +37,7 @@ docs = [
     "gitpython>=3.1.31",
     "sphinx~=7.4.7",
     "sphinx-copybutton>=0.5.2",
-    "sphinx-rtd-theme~=3.0.2",
+    "sphinx-rtd-theme~=3.1.0",
 ]
 debug = [
     "ipdb>=0.13.9",
