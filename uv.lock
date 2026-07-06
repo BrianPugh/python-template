@@ -973,7 +973,7 @@ debug = [
     { name = "line-profiler", specifier = ">=3.5.1" },
 ]
 dev = [
-    { name = "coverage", extras = ["toml"], specifier = ">=5.1" },
+    { name = "coverage", extras = ["toml"], specifier = ">=7.15.0" },
     { name = "cython", specifier = ">=3.0.3" },
     { name = "pre-commit", specifier = ">=2.16.0" },
     { name = "pytest", specifier = ">=7.1.2" },
