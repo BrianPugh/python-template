@@ -34,11 +34,11 @@ Features
 
 * Features dependent if project is a library or a standalone project.
 
-* `Poetry`_ support.
+* `uv`_ support.
 
-  * If not installed, Poetry will automatically be installed when running ``bootstrap``.
+  * If not installed, uv will automatically be installed when running ``bootstrap``.
 
-  * `Poetry Dynamic Versioning`_ - Dynamically handles your project version based on git tags.
+  * `setuptools-scm`_ - Dynamically handles your project version based on git tags.
 
 * Optional command line interface boilerplate using Cyclopts_.
 
@@ -68,6 +68,9 @@ Features
 
   * `Pyright <https://github.com/microsoft/pyright>`_ - Static type checker.
 
+  * On CI, lightweight hooks run on `pre-commit.ci`_, which also auto-fixes pull requests
+    and auto-updates hook versions weekly. Enable it for your repository at https://pre-commit.ci.
+
 * `Docker`_ support for standalone projects.
 
 * GitHub Actions for:
@@ -80,7 +83,18 @@ Features
 
   * Build and upload wheels to PyPI on semver tags ``vX.Y.Z``.
 
-    * Add your `PyPI API token`_ to your `GitHub secrets`_ for key ``PYPI_TOKEN``.
+    * Publishing uses a `PyPI Trusted Publisher`_ (OIDC); no API token or GitHub secret is required.
+      To set it up, go to PyPI -> Your account -> Publishing -> "Add a new pending publisher" and enter:
+
+      * **PyPI Project Name**: your project name.
+
+      * **Owner** / **Repository name**: your GitHub username and repository name.
+
+      * **Workflow name**: ``build_wheels.yaml`` if using Cython, otherwise ``deploy.yaml``.
+
+      * **Environment name**: ``pypi``.
+
+      The first tagged release will then create the PyPI project automatically.
 
     * If using Cython, pre-built binary packages will be created for all major operating systems, python versions, and computer architectures.
 
@@ -116,8 +130,8 @@ Replace any reference here to ``pythontemplate`` with your project name.
 
 4. If adding type hints, update ``pythontemplate/_c_extension.pyi`` to reflect your ``.pyx`` implementation.
 
-5. Optionally tweak ``build.py`` (runs at setup/installation) with compiler options.
-   The default ``build.py`` offers a good, working starting point for most projects and performs the following:
+5. Optionally tweak ``setup.py`` (runs at setup/installation) with compiler options.
+   The default ``setup.py`` offers a good, working starting point for most projects and performs the following:
 
    a. Recursively searches for all C files in ``pythontemplate/_c_src/``.
       To change this action, modify the variable ``c_files``.
@@ -131,13 +145,16 @@ Replace any reference here to ``pythontemplate`` with your project name.
       The logic checks for the environment variable ``CIBUILDWHEEL`` because we don't want to allow
       build failures in our CI when creating pre-built wheels that we upload to PyPI.
 
+   e. ``[tool.uv]`` in ``pyproject.toml`` sets ``cache-keys`` so that changes to Cython/C
+      sources trigger a rebuild on the next ``uv sync``.
+
 6. The Github Action workflow defined in ``.github/workflows/build_wheels.yaml`` will create pre-built
    binaries for all major Python versions, operating systems, and computer architectures.
    It will also create a Source Distribution (sdist).
    All of these distributions will be uploaded to the github action job page.
    On git semver tags (``vX.X.X``), they will be uploaded to PyPI.
 
-When developing, you must re-run ``poetry-install`` to re-compile changes made in C/Cython code.
+When developing, you must re-run ``uv sync`` to re-compile changes made in C/Cython code.
 The resulting, built Cython code will be importable from ``pythontemplate._c_extension``, so it may be
 good to add something like the following to your ``pythontemplate/__init__.py``:
 
@@ -157,18 +174,19 @@ this template at https://github.com/BrianPugh/python-template .
 .. |GHA tests| image:: https://github.com/BrianPugh/python-template/workflows/tests/badge.svg
    :target: https://github.com/BrianPugh/python-template/actions?query=workflow%3Atests
    :alt: GHA Status
-.. |Python compat| image:: https://img.shields.io/badge/>=python-3.9-blue.svg
+.. |Python compat| image:: https://img.shields.io/badge/>=python-3.10-blue.svg
 
 .. _Codecov Dashboard: https://app.codecov.io/gh
 .. _Docker: https://www.docker.com
 .. _GitHub secrets: https://docs.github.com/en/actions/security-guides/encrypted-secrets
-.. _Poetry: https://python-poetry.org
+.. _uv: https://docs.astral.sh/uv/
 .. _Pre-commit: https://pre-commit.com
-.. _PyPI API token: https://pypi.org/help/#apitoken
+.. _pre-commit.ci: https://pre-commit.ci
+.. _PyPI Trusted Publisher: https://docs.pypi.org/trusted-publishers/
 .. _ReadTheDocs Dashboard: https://readthedocs.org/dashboard/
 .. _ReadTheDocs: https://readthedocs.org
 .. _Sphinx: https://www.sphinx-doc.org/en/master/
 .. _token: https://docs.docker.com/docker-hub/access-tokens/
 .. _Cython: https://cython.readthedocs.io/en/latest/
-.. _Poetry Dynamic Versioning: https://github.com/mtkennerly/poetry-dynamic-versioning
+.. _setuptools-scm: https://github.com/pypa/setuptools-scm
 .. _Cyclopts: https://github.com/BrianPugh/cyclopts

@@ -244,6 +244,7 @@ Temporary Items
 # Cython
 pythontemplate/_c_extension.c
 pythontemplate/*.html
+wheelhouse/
 
-# Poetry
-poetry.toml
+# uv
+uv.toml

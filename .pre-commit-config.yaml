@@ -1,5 +1,16 @@
-exclude: ^(poetry.lock|.idea/)
+ci:
+  autoupdate_schedule: weekly
+  # These hooks need the project's .venv, which doesn't exist on pre-commit.ci;
+  # they run in the GitHub Actions "lint" job instead.
+  skip: [pyright, creosote]
+
+exclude: ^(uv.lock|.idea/)
 repos:
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: "0.11.26"
+    hooks:
+      - id: uv-lock
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: "v0.12.4"
     hooks:
