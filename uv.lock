@@ -279,7 +279,7 @@ toml = [
 
 [[package]]
 name = "cyclopts"
-version = "4.21.0"
+version = "4.22.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "attrs" },
@@ -289,9 +289,9 @@ dependencies = [
     { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d9/53/977540be379b0c82550df872912446def343ab0dfa138b8726120427f83d/cyclopts-4.21.0.tar.gz", hash = "sha256:477c18c791c924cca4836f79fce000a7bae45f551e340d9e1654e102c6d9ab9d", size = 190914, upload-time = "2026-07-09T19:07:07.154Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3d/47/32d992e829f63aedea5b93360db23c8882c9bbbde094bcf0fff899ea8a3b/cyclopts-4.22.1.tar.gz", hash = "sha256:49cd3779da7113a96ac5c23b151aa61ac9ae1b4b1fe813594d207ca843c97892", size = 193551, upload-time = "2026-07-20T17:38:59.38Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b4/f6/1c671874560a70d902dd57028a75411c176910de2df3d6a6a533de424131/cyclopts-4.21.0-py3-none-any.whl", hash = "sha256:ded3ddb15b0c815f44d245011fc4cdd5a4809a3bb8202869e9e02195a87c0e18", size = 230066, upload-time = "2026-07-09T19:07:05.326Z" },
+    { url = "https://files.pythonhosted.org/packages/9a/89/f2710638cd2f824cb976777e63ef6ed1e83fc56888cf5c9f5a053490b7be/cyclopts-4.22.1-py3-none-any.whl", hash = "sha256:9b614e231075aee9849c0bfd78f7611ab7adf417f16af5b9e42b9ed6e18c17d1", size = 232953, upload-time = "2026-07-20T17:38:58.078Z" },
 ]
 
 [[package]]
@@ -412,14 +412,14 @@ wheels = [
 
 [[package]]
 name = "gitpython"
-version = "3.1.51"
+version = "3.1.53"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "gitdb" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/30/a8a0c15f9480dc91b5b7f11ebd26105e5f80898d7ff02da197fef35d8395/gitpython-3.1.51.tar.gz", hash = "sha256:22c9c94bb6b0b9f3c7157c684fece45a414cea204586b600beae6cd4570dcd6d", size = 223519, upload-time = "2026-07-12T13:40:07.922Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/17/24/0e0c12cb6f7cb864779a9d2fefee9ca91838f6db402c8780c9d28a8d7ebe/gitpython-3.1.53.tar.gz", hash = "sha256:06ae8d9623b0ed0d67b8adeac5c7008d0a5a404b087a9e0d0c7163bdd3a6b497", size = 224597, upload-time = "2026-07-20T13:41:52.839Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f8/11/1232bb1ba52a230f20ff08e1b3df7cd9d43a71b61cc0a1c37941064fe4c7/gitpython-3.1.51-py3-none-any.whl", hash = "sha256:d5b29685708f3c80a56db040b665bfd69492c8e150b5848532af8013b686c5a4", size = 215246, upload-time = "2026-07-12T13:40:06.43Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/a6/bff12b3238885eeef7d28ef908b24e0cba91c476c31cb876a00a0986ce2c/gitpython-3.1.53-py3-none-any.whl", hash = "sha256:187885556b64ab357bd4ea84e2c4cce2861a613a7f4268b3f7f7ba05f2ce4ab0", size = 216237, upload-time = "2026-07-20T13:41:51.473Z" },
 ]
 
 [[package]]
@@ -962,7 +962,7 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "cyclopts", specifier = ">=4.21.0" },
+    { name = "cyclopts", specifier = ">=4.22.1" },
     { name = "rich", specifier = ">=10.11.0" },
     { name = "typing-extensions", specifier = ">=4.15.0" },
 ]
@@ -981,7 +981,7 @@ dev = [
     { name = "pytest-mock", specifier = ">=3.7.0" },
 ]
 docs = [
-    { name = "gitpython", specifier = ">=3.1.51" },
+    { name = "gitpython", specifier = ">=3.1.53" },
     { name = "sphinx", specifier = "~=8.1.3" },
     { name = "sphinx-copybutton", specifier = ">=0.5.2" },
     { name = "sphinx-rtd-theme", specifier = "~=3.1.0" },
