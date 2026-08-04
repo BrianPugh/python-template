@@ -14,7 +14,7 @@ dependencies = [
     # Be as loose as possible if writing a library.
     "typing-extensions>=4.15.0",
     "rich>=10.11.0",
-    "cyclopts>=4.22.2",
+    "cyclopts>=4.22.3",
 ]
 
 [project.urls]
